@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.util.Random;
 import java.sql.ResultSet;
 
-public class Test_File {
+public class Airlinetest {
 
 	public static void main(String[] args) throws Exception {
 
@@ -15,8 +15,8 @@ public class Test_File {
 	}
 
 	public static void post() throws Exception {
-		final String var1 = "Joe";
-		final String var2 = "Schmoe";
+		final String var1 = "Tony";
+		final String var2 = "Potato";
 		Random rd = new Random();
 		try {
 			Connection con = getConnection();
@@ -33,9 +33,9 @@ public class Test_File {
 	public static Connection getConnection() throws Exception {
 		try {
 			String driver = "com.mysql.cj.jdbc.Driver";
-			String url = "jdbc:http://185.27.134.10/:3306/epiz_29867093_airlinedb";
-			String username = "root";
-			String pass = "C0mp380se@ting";
+			String url = "jdbc:mysql://sql3.freemysqlhosting.net:3306/sql3439645";
+			String username = "sql3439645";
+			String pass = "pEdp5FFFLf";
 			Class.forName(driver).newInstance();
 
 			Connection conn = DriverManager.getConnection(url, username, pass);
