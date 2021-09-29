@@ -1,3 +1,10 @@
+/* Programmer:  Robert Mosier */
+/* Organization:  CSUN */
+/* Course:  COMP 380/L */
+/* Instructor:  Abhishek Verma */
+/* Created:  27-SEP-2021 */
+/* Team members:  Lyana Curry, Abraham Sculler, Ji Sun Wu */
+
 import java.lang.Runtime;
 import java.io.IOException;
 
@@ -19,7 +26,6 @@ public class KioskTerminal {
 		Menu mainMenu = new Menu(TITLE, OPTIONS, OPTION_ZERO);
 		switch(mainMenu.makeSelection()) {
 			case 0: exitKiosk();
-					break;
 			case 1: searchFlights();
 					break;
 			case 2: viewRes();

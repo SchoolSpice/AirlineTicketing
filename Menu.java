@@ -1,3 +1,11 @@
+/* Programmer:  Robert Mosier */
+/* Organization:  CSUN */
+/* Course:  COMP 380/L */
+/* Instructor:  Abhishek Verma */
+/* Created:  27-SEP-2021 */
+/* Team members:  Lyana Curry, Abraham Sculler, Ji Sun Wu */
+
+
 import java.util.Scanner;
 
 public class Menu {
