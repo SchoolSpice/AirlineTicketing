@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.Random;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
+import java.util.Scanner;
 
 public class KioskTerminal {
 	private static final String TITLE =
@@ -24,19 +24,15 @@ public class KioskTerminal {
 	private static final String OPTION_ZERO =
 		"Exit";
 	
-	public static void main(String args[]) throws IOException, InterruptedException{
+	public static void main(String args[]) throws Exception{
 		new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor(); 
 		
 		Menu mainMenu = new Menu(TITLE, OPTIONS, OPTION_ZERO);
 		switch(mainMenu.makeSelection()) {
 			case 0: exitKiosk();
 					break;
-			case 1: try {
+			case 1:
 				searchFlights();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 					break;
 			case 2: viewRes();
 					break;
@@ -45,30 +41,53 @@ public class KioskTerminal {
 		}
 	}
 	
-	private static  ArrayList<String>	searchFlights() throws Exception{
+	private static void	searchFlights() throws Exception{
+		String header = "ID      Departure Time      Departure Date      Departure Location      Arrival Location";
+		System.out.println(header);
 		try {
 			Connection con = getConnection();
-			PreparedStatement statement = con.prepareStatement("SELECT * FROM sql3439645.flights");
+			PreparedStatement flights = con.prepareStatement("SELECT * FROM sql3439645.flights");
 			
-			ResultSet result = statement.executeQuery();
+			ResultSet flightarray = flights.executeQuery();
 			ArrayList<String> array = new ArrayList<String>();
-			System.out.println("ID      Departure Time      Departure Date      Departure Location      Arrival Location");
-			while(result.next()) {
-				System.out.print(result.getString("idflights"));
+			
+			while(flightarray.next()) {
+				System.out.print(flightarray.getString("idflights"));
 				System.out.print("         ");
-				System.out.print(result.getString("departtime"));
+				System.out.print(flightarray.getString("departtime"));
 				System.out.print("           ");
-				System.out.print(result.getString("departdate"));
+				System.out.print(flightarray.getString("departdate"));
 				System.out.print("                ");
-				System.out.print(result.getString("departlocationid"));
+				System.out.print(flightarray.getString("departlocationid"));
 				System.out.print("                    ");
-				System.out.println(result.getString("arrivallocationid"));
-				array.add(result.getString("arrivallocationid"));
+				System.out.println(flightarray.getString("arrivallocationid"));
+				array.add(flightarray.getString("arrivallocationid"));
 			}
 			System.out.println("All availble Flights");
-			return array;
+			System.out.println("Which ID Do you want to Reserve?:");
+			String flightid = "";
+			Scanner input = new Scanner(System.in);
+			flightid = input.nextLine();
+			System.out.println("You have selected:");
+			System.out.println(header);
+			PreparedStatement reserve = con.prepareStatement("SELECT * FROM sql3439645.flights Where flights.idflights = '"+flightid+"'");
+			ResultSet chosenflight = reserve.executeQuery();
+			ArrayList<String> chosen = new ArrayList<String>();
+			
+			while(chosenflight.next()) {
+				System.out.print(chosenflight.getString("idflights"));
+				System.out.print("         ");
+				System.out.print(chosenflight.getString("departtime"));
+				System.out.print("           ");
+				System.out.print(chosenflight.getString("departdate"));
+				System.out.print("                ");
+				System.out.print(chosenflight.getString("departlocationid"));
+				System.out.print("                    ");
+				System.out.println(chosenflight.getString("arrivallocationid"));
+				chosen.add(chosenflight.getString("arrivallocationid"));
+			}
+			System.out.println("Is this correct?");
 		}catch(Exception e) {System.out.println(e);}
-		return null;
 	}
 	
 	private static void viewRes(){};
