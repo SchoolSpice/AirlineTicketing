@@ -49,7 +49,7 @@ public class KioskTerminal {
 			ResultSet flightarray = flights.executeQuery();
 			ArrayList<String> array = new ArrayList<String>();
 
-			while (flightarray.next()) { //this outputs the flight table from the database
+			while (flightarray.next()) { // this outputs the flight table from the database
 				System.out.print(flightarray.getString("idflights"));
 				System.out.print("         ");
 				System.out.print(flightarray.getString("departtime"));
@@ -62,7 +62,8 @@ public class KioskTerminal {
 				array.add(flightarray.getString("arrivallocationid"));
 			}
 			System.out.println("All availble Flights");
-			System.out.println("Which ID Do you want to Reserve?:");
+			System.out.println("Which ID Do you want to Reserve?:"); // This is a little clunky right now, open to
+																		// suggestions on how to make better
 			String flightid = "";
 			Scanner input = new Scanner(System.in);
 			flightid = input.nextLine();
@@ -73,7 +74,7 @@ public class KioskTerminal {
 			ResultSet chosenflight = reserve.executeQuery();
 			ArrayList<String> chosen = new ArrayList<String>();
 
-			while (chosenflight.next()) { //Outputs the 1 row that the customer is choosing
+			while (chosenflight.next()) { // Outputs the 1 row that the customer is choosing
 				System.out.print(chosenflight.getString("idflights"));
 				System.out.print("         ");
 				System.out.print(chosenflight.getString("departtime"));
@@ -87,12 +88,16 @@ public class KioskTerminal {
 			}
 			System.out.println("Is this correct?");
 			String answer = input.nextLine();
-			if (answer != "y") { //currently always assume yes (Could not get this to function properly)
+			if (answer != "y") { // currently always assume yes (Could not get this to function properly)
 				System.out.println("Then lets get you reserved");
 				System.out.println("What is your first name?");
 				String first = input.nextLine();
 				System.out.println("What is your last name?");
 				String last = input.nextLine();
+
+				// Want to add a check here if there is already a user with that name and if so
+				// then ask for an identifier.
+
 				PreparedStatement postedcust = con.prepareStatement(
 						"INSERT INTO customers (firstname,lastname) VALUES ('" + first + "','" + last + "')");
 				postedcust.executeUpdate();
@@ -132,7 +137,7 @@ public class KioskTerminal {
 		System.exit(0);
 	}
 
-	public static Connection getConnection() throws Exception { //Needed to connect to the server
+	public static Connection getConnection() throws Exception { // Needed to connect to the server
 		try {
 			String driver = "com.mysql.cj.jdbc.Driver";
 			String url = "jdbc:mysql://sql3.freemysqlhosting.net:3306/sql3439645";
