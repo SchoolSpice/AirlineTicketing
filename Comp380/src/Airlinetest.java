@@ -15,8 +15,8 @@ public class Airlinetest {
 	}
 
 	public static void post() throws Exception {
-		final String var1 = "Abe";
-		final String var2 = "Sculler";
+		final String var1 = "John";
+		final String var2 = "Hancock";
 		Random rd = new Random();
 		try {
 			Connection con = getConnection();
