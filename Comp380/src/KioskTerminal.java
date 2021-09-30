@@ -49,7 +49,7 @@ public class KioskTerminal {
 			ResultSet flightarray = flights.executeQuery();
 			ArrayList<String> array = new ArrayList<String>();
 
-			while (flightarray.next()) {
+			while (flightarray.next()) { //this outputs the flight table from the database
 				System.out.print(flightarray.getString("idflights"));
 				System.out.print("         ");
 				System.out.print(flightarray.getString("departtime"));
@@ -73,7 +73,7 @@ public class KioskTerminal {
 			ResultSet chosenflight = reserve.executeQuery();
 			ArrayList<String> chosen = new ArrayList<String>();
 
-			while (chosenflight.next()) {
+			while (chosenflight.next()) { //Outputs the 1 row that the customer is choosing
 				System.out.print(chosenflight.getString("idflights"));
 				System.out.print("         ");
 				System.out.print(chosenflight.getString("departtime"));
@@ -87,7 +87,7 @@ public class KioskTerminal {
 			}
 			System.out.println("Is this correct?");
 			String answer = input.nextLine();
-			if (answer != "y") {
+			if (answer != "y") { //currently always assume yes (Could not get this to function properly)
 				System.out.println("Then lets get you reserved");
 				System.out.println("What is your first name?");
 				String first = input.nextLine();
@@ -105,13 +105,14 @@ public class KioskTerminal {
 								+ "'), (Select Max(idconfirmations) From sql3439645.confirmations Where flightid = '"
 								+ flightid + "'))");
 				postedcustconf.executeUpdate();
-				PreparedStatement confirmation = con.prepareStatement(
-						"Select Max(idconfirmations) From sql3439645.confirmations Where flightid = '"+flightid+ "'");
+				PreparedStatement confirmation = con
+						.prepareStatement("Select Max(idconfirmations) From sql3439645.confirmations Where flightid = '"
+								+ flightid + "'");
 				ResultSet confirmationset = confirmation.executeQuery();
 				confirmationset.next();
 				System.out.println("Congrats " + first + " " + last + " you have sucsesfully booked your flight.");
 				System.out.println("Your Confirmation number is: " + confirmationset.getString("Max(idconfirmations)"));
-
+// Not sure if we want to do anything else in this class other than go back to the main menu
 			} else {
 				System.out.println("If failed");
 			}
@@ -131,7 +132,7 @@ public class KioskTerminal {
 		System.exit(0);
 	}
 
-	public static Connection getConnection() throws Exception {
+	public static Connection getConnection() throws Exception { //Needed to connect to the server
 		try {
 			String driver = "com.mysql.cj.jdbc.Driver";
 			String url = "jdbc:mysql://sql3.freemysqlhosting.net:3306/sql3439645";
@@ -140,7 +141,7 @@ public class KioskTerminal {
 			Class.forName(driver).newInstance();
 
 			Connection conn = DriverManager.getConnection(url, username, pass);
-			// System.out.println("Connected");
+
 			return conn;
 		} catch (Exception e) {
 			System.out.println(e);
