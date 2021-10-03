@@ -44,7 +44,7 @@ public class KioskTerminal {
 		System.out.println(header);
 		try {
 			Connection con = getConnection();
-			PreparedStatement flights = con.prepareStatement("SELECT * FROM sql3439645.flights");
+			PreparedStatement flights = con.prepareStatement("SELECT * FROM airlinedb.flights");
 
 			ResultSet flightarray = flights.executeQuery();
 			ArrayList<String> array = new ArrayList<String>();
@@ -70,7 +70,7 @@ public class KioskTerminal {
 			System.out.println("You have selected:");
 			System.out.println(header);
 			PreparedStatement reserve = con
-					.prepareStatement("SELECT * FROM sql3439645.flights Where flights.idflights = '" + flightid + "'");
+					.prepareStatement("SELECT * FROM airlinedb.flights Where flights.idflights = '" + flightid + "'");
 			ResultSet chosenflight = reserve.executeQuery();
 			ArrayList<String> chosen = new ArrayList<String>();
 
@@ -105,13 +105,13 @@ public class KioskTerminal {
 						.prepareStatement("INSERT INTO confirmations (flightid) VALUES ('" + flightid + "')");
 				postedconf.executeUpdate();
 				PreparedStatement postedcustconf = con.prepareStatement(
-						"INSERT INTO customerconfirmation VALUES ((Select Max(idcustomers) From sql3439645.customers Where firstname = '"
+						"INSERT INTO customerconfirmation VALUES ((Select Max(idcustomers) From airlinedb.customers Where firstname = '"
 								+ first + "' And lastname = '" + last
-								+ "'), (Select Max(idconfirmations) From sql3439645.confirmations Where flightid = '"
+								+ "'), (Select Max(idconfirmations) From airlinedb.confirmations Where flightid = '"
 								+ flightid + "'))");
 				postedcustconf.executeUpdate();
 				PreparedStatement confirmation = con
-						.prepareStatement("Select Max(idconfirmations) From sql3439645.confirmations Where flightid = '"
+						.prepareStatement("Select Max(idconfirmations) From airlinedb.confirmations Where flightid = '"
 								+ flightid + "'");
 				ResultSet confirmationset = confirmation.executeQuery();
 				confirmationset.next();
@@ -140,9 +140,9 @@ public class KioskTerminal {
 	public static Connection getConnection() throws Exception { // Needed to connect to the server
 		try {
 			String driver = "com.mysql.cj.jdbc.Driver";
-			String url = "jdbc:mysql://sql3.freemysqlhosting.net:3306/sql3439645";
-			String username = "sql3439645";
-			String pass = "pEdp5FFFLf";
+			String url = "jdbc:mysql://db4free.net:3306/airlinedb";
+			String username = "coolbob915";
+			String pass = "C0mp380se@ting";
 			Class.forName(driver).newInstance();
 
 			Connection conn = DriverManager.getConnection(url, username, pass);
