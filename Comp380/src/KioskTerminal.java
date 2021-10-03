@@ -140,7 +140,7 @@ public class KioskTerminal {
 	public static Connection getConnection() throws Exception { // Needed to connect to the server
 		try {
 			String driver = "com.mysql.cj.jdbc.Driver";
-			String url = "jdbc:mysql://db4free.net:3306/airlinedb";
+			String url = "jdbc:mysql://db4free.net:3306/airlinedb"; //new database
 			String username = "coolbob915";
 			String pass = "C0mp380se@ting";
 			Class.forName(driver).newInstance();
