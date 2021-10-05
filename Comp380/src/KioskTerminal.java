@@ -1,13 +1,14 @@
-import java.lang.Runtime;
+
+//import java.lang.Runtime;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
+//import java.io.IOException;
+//import java.sql.Connection;
+//import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Random;
+//import java.sql.SQLException;
+//import java.sql.Statement;
+//import java.util.Random;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -110,13 +111,13 @@ public class KioskTerminal {
 								+ "'), (Select Max(idconfirmations) From airlinedb.confirmations Where flightid = '"
 								+ flightid + "'))");
 				postedcustconf.executeUpdate();
-				PreparedStatement confirmation = con
-						.prepareStatement("Select Max(idconfirmations) From airlinedb.confirmations Where flightid = '"
-								+ flightid + "'");
+				PreparedStatement confirmation = con.prepareStatement(
+						"Select Max(idconfirmations) From airlinedb.confirmations Where flightid = '" + flightid + "'");
 				ResultSet confirmationset = confirmation.executeQuery();
 				confirmationset.next();
 				System.out.println("Congrats " + first + " " + last + " you have sucsesfully booked your flight.");
 				System.out.println("Your Confirmation number is: " + confirmationset.getString("Max(idconfirmations)"));
+				input.close();
 // Not sure if we want to do anything else in this class other than go back to the main menu
 			} else {
 				System.out.println("If failed");
@@ -140,7 +141,7 @@ public class KioskTerminal {
 	public static Connection getConnection() throws Exception { // Needed to connect to the server
 		try {
 			String driver = "com.mysql.cj.jdbc.Driver";
-			String url = "jdbc:mysql://db4free.net:3306/airlinedb"; //new database
+			String url = "jdbc:mysql://db4free.net:3306/airlinedb"; // new database
 			String username = "coolbob915";
 			String pass = "C0mp380se@ting";
 			Class.forName(driver).newInstance();

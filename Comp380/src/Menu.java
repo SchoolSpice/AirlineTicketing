@@ -50,6 +50,7 @@ public class Menu {
 				invalid(MENU_SIZE);
 			}
 		}
+		input.close();
 		/* Return the user-selected menu option */
 		return selection;
 	}
