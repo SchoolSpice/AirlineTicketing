@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class KioskTerminal {
+public class KioskTerminalOLD {
 	private static final String TITLE = "Airline Reservation Kiosk";
 
 	private static final String[] OPTIONS = { "Search Flights", "View Reservation", "Cancel Reservation" };
@@ -23,7 +23,7 @@ public class KioskTerminal {
 	public static void main(String args[]) throws Exception {
 		new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
 
-		Menu mainMenu = new Menu(TITLE, OPTIONS, OPTION_ZERO);
+		MenuOLD mainMenu = new MenuOLD(TITLE, OPTIONS, OPTION_ZERO);
 		switch (mainMenu.makeSelection()) {
 		case 0:
 			exitKiosk();

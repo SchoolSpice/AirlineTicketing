@@ -1,13 +1,13 @@
 import java.util.Scanner;
 
-public class Menu {
+public class MenuOLD {
 	/* Instance variables for Menu class */
 	final String TITLE;
 	final String[] OPTIONS;
 	final String OPTION_ZERO;
 	
 	/* Constructor */
-	public Menu(final String TITLE,
+	public MenuOLD(final String TITLE,
 				final String[] OPTIONS,
 				final String OPTION_ZERO) {
 		this.TITLE = TITLE;
