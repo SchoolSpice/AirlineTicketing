@@ -93,7 +93,7 @@ public class Menu {
     }
 
     /* Prints a console message after invalid entry */
-    private void invalid(int MENU_SIZE) {
+    private void invalid(final int MENU_SIZE) {
         System.out.println("\nINVALID INPUT: " +
             "Please enter a number between 0 and " +
              MENU_SIZE +

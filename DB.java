@@ -6,6 +6,26 @@
  * Team members:  Lyana Curry, Abraham Sculler, Ji Sun Wu
  */
 
+/* Class:  DB
+ * Instances of the DB class connect to a
+ * mySQL database that is hosted online.
+ * The DB class executes SQL statements 
+ * and returns the results inside a
+ * a data structure called "ResultSet"
+ * from the JDBC library.
+ * The DB class is responsible for the SQL
+ * used to manage the database, as well as
+ * wrapping/unwrapping the data.
+ * The DB class does not 'know' where the
+ * data is going to or how it's being used.
+ */
+
+ // SELECT * FROM airlinedb.flights
+ // for SQL:
+ // user input == SQL statement
+ // SQL output == ResultSet*
+ // *from JDBC library
+
 package AirlineTicketing;
 
 import java.sql.Connection;
@@ -39,20 +59,27 @@ class DB {
         return new DB(new_conn);
     }
     
-    /* TODO: split into two separate methods */
-    ArrayList<String> allFlights() {
+    /* TODO: method to inset new customer into database */
+	void insertCustomer(String firstName, String lastName) throws Exception {
+		PreparedStatement insert =
+		conn.prepareStatement("INSERT INTO customers (firstname,lastname) VALUES ('"
+				+ firstName
+				+ "','"
+				+ lastName
+				+ "')");
+		insert.executeUpdate();
+	}
+	
+	
+	/* TODO: split into two separate methods */
+    ArrayList<String> allFlights() throws Exception {
         ResultSet results;
         ArrayList<String> records = new ArrayList<String>();
-        try {
-            PreparedStatement query =
+        PreparedStatement query =
                     conn.prepareStatement("SELECT * FROM airlinedb.flights");
-            results = query.executeQuery();
-        }
-        catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
-        /* Refactor to Data class */
+        results = query.executeQuery();
+        
+        /* separate method */
         try {
             final String DELIMITER = "; ";
             while(results.next()) {

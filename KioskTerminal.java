@@ -5,6 +5,18 @@
  * Date created:  5-OCT-2021
  * Team members:  Lyana Curry, Abraham Sculler, Ji Sun Wu
  */
+
+/* Class:  KioskTerminal
+ * Instances of this class are console
+ * applications that act as a user
+ * interface for the airline ticketing
+ * system.  This "front end" should
+ * only handle user input and output. 
+ * The KioskTerminal class does not
+ * 'know' where the data comes from
+ * or why it changes.
+ */
+
 package AirlineTicketing;
 
 // import java.lang.Runtime;

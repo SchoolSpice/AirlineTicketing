@@ -5,6 +5,15 @@
  * Date created:  05-OCT-2021
  * Team members:  Lyana Curry, Abraham Sculler, Ji Sun Wu
  */
+
+/* Class:  Data
+ * Instances of this class are used to handle
+ * our business logic and data processing.
+ * The Data class does not 'know' how the data
+ * is stored in the database or displayed on
+ * the screen.
+ */
+
 package AirlineTicketing;
 
 import java.sql.ResultSet;
@@ -31,9 +40,15 @@ class Data {
     }
     
     void flightList() {
-        Object[] records = database.allFlights().toArray();
+        Object[] records = {"Search failed: "};
+        try {
+             records = database.allFlights().toArray();
+        } catch (Exception e) {
+            System.out.println(records);
+            System.out.println(e);
+        }
         for (Object o : records) {
-            System.out.println(o.toString());
+            System.out.println(o);
         }
     }
 }
