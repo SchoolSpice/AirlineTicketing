@@ -42,7 +42,7 @@ class Data {
     void flightList() {
         Object[] records = {"Search failed: "};
         try {
-             records = database.allFlights().toArray();
+            records = database.allFlights().toArray();
         } catch (Exception e) {
             System.out.println(records);
             System.out.println(e);
@@ -51,4 +51,72 @@ class Data {
             System.out.println(o);
         }
     }
+    
+	
+	void search(String departure, String arrival, int[] mdy) {
+            DB database;
+            ArrayList<String> results;
+            int flightNum;
+            boolean success = false;
+            try {
+                database = DB.initialize();
+            } catch (Exception e) {
+                System.out.println(e);
+                System.out.println("Unable to connect to database.");
+                return;
+            }
+            try {
+                results = database.searchFlights(departure, arrival, mdy);
+            } catch (Exception e) {
+                System.out.println(e);
+                System.out.println("Unable to search database.");
+            }
+            //TODO: do something with results
+            flightNum = ConsoleTable.pick(results);
+            
+	}
+	
+    void runSQL(final String S) {
+        ResultSet results;
+        ConsoleTable table;
+        try {
+            results = database.runQuery(S);
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("SQL query unsuccessful.");
+            return;
+        }
+        try {
+            table = ConsoleTable.makeTable(results);
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to retrieve meta data.");
+            return;
+        }
+        try {
+            table.displayTable();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to display results.");
+        }
+    } //end-runSQL
+    
+    static int[] convert(String s) throws Exception {
+        String[] yearMonthDay;
+        int[] date = {0, 0, 0};
+        try {
+            yearMonthDay = s.split("/");
+        } catch (Exception e) {
+            try {
+                yearMonthDay = s.split("-");
+            } catch (Exception e2) {
+                yearMonthDay = s.split(" ");
+            }
+        }
+        date[0] = Integer.parseInt(yearMonthDay[0]);
+        date[1] = Integer.parseInt(yearMonthDay[1]);
+        date[2] = Integer.parseInt(yearMonthDay[2]);
+        if(date[0] < 100) {date[0] += 2000;} // convert YY to YYYY
+        return date;
+    } //end-convert
 }

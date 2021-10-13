@@ -31,10 +31,14 @@ package AirlineTicketing;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Calendar;
 
 class DB {
+    private static DB single_instance = null;
     private static final String DRIVER =   "com.mysql.cj.jdbc.Driver";
     private static final String URL =      "jdbc:mysql://db4free.net:3306/airlinedb";
     private static final String USERNAME = "coolbob915";
@@ -44,61 +48,87 @@ class DB {
     private DB (Connection conn) {
         super();
         this.conn = conn;
-    }
+    } //end-DB
     
     static DB initialize() throws Exception {
         Connection new_conn;
-        try {
-            Class.forName(DRIVER).newInstance();
-            new_conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        }
-        catch (Exception e) {
-            System.out.println(e);
-            return null;
-        }
-        return new DB(new_conn);
-    }
+        if(single_instance == null) {
+            try {
+                Class.forName(DRIVER).newInstance();
+                new_conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            }
+            catch (Exception e) {
+                System.out.println(e);
+                return null;
+            }
+            single_instance = new DB(new_conn);
+            return single_instance;
+        } //end-if
+        return single_instance;
+    } //end-initialize
+	
+    ArrayList<String> searchFlights(final String DEP, String ARR, final int[] MDY) throws Exception {
+        PreparedStatement query =
+                conn.prepareStatement("SELECT * FROM airlinedb.flights " +
+                "WHERE flights.departurelocationid = '" +
+                DEP + "', flights.arrivallocationid = '" +
+                ARR + "', flights.departdate = '" + MDY[0] +
+                "-" + MDY[1] + "-" + MDY[2] + "'");
+        return toArrayList(query.executeQuery());
+    } //end-searchFlights
     
-    /* TODO: method to inset new customer into database */
-	void insertCustomer(String firstName, String lastName) throws Exception {
-		PreparedStatement insert =
-		conn.prepareStatement("INSERT INTO customers (firstname,lastname) VALUES ('"
-				+ firstName
-				+ "','"
-				+ lastName
-				+ "')");
-		insert.executeUpdate();
-	}
+    private boolean insertCustomer(final String FIRST_NAME,
+            final String LAST_NAME) {
+        try {
+            PreparedStatement insert =
+                    conn.prepareStatement("INSERT INTO customers (firstname,lastname)"
+                    + "VALUES ('"
+                    + FIRST_NAME
+                    + "','"
+                    + LAST_NAME
+                    + "')");
+            insert.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            return false;
+        } //end-try-catch
+    } //end-insertCustomer
 	
-	
-	/* TODO: split into two separate methods */
     ArrayList<String> allFlights() throws Exception {
         ResultSet results;
         ArrayList<String> records = new ArrayList<String>();
         PreparedStatement query =
-                    conn.prepareStatement("SELECT * FROM airlinedb.flights");
+                conn.prepareStatement("SELECT * FROM airlinedb.flights");
         results = query.executeQuery();
-        
-        /* separate method */
-        try {
-            final String DELIMITER = "; ";
-            while(results.next()) {
-                String flightInfo =
-                        results.getString("idflights") +
-                        DELIMITER +
-                        results.getString("departtime") +
-                        DELIMITER +
-                        results.getString("departdate") +
-                        DELIMITER +
-                        results.getString("departlocationid") +
-                        DELIMITER +
-                        results.getString("arrivallocationid");
-                records.add(flightInfo);
-            }
-        }
-        catch (Exception e) {
-            System.out.println(e);
-        }
-        return records;
+        System.out.println("\n" + results.getMetaData());
+        return toArrayList(results);
+    } //end-allFlights
+	
+    ResultSet runQuery(final String s) throws Exception {
+        PreparedStatement query = conn.prepareStatement(s);
+        ResultSet results = query.executeQuery();
+        ResultSetMetaData meta = results.getMetaData();
+        System.out.println(results.toString());
+        System.out.println("Number of columns: " + meta.getColumnCount());
+        return results;
     }
-}
+    
+    private ArrayList<String> toArrayList(ResultSet r) throws Exception {
+        final String DELIMITER = "; ";
+        ArrayList<String> list = new ArrayList<String>();
+        while(r.next()) { 
+            String flightInfo =
+                    r.getString("idflights") +
+                    DELIMITER +
+                    r.getString("departtime") +
+                    DELIMITER +
+                    r.getString("departdate") +
+                    DELIMITER +
+                    r.getString("departlocationid") +
+                    DELIMITER +
+                    r.getString("arrivallocationid");
+            list.add(flightInfo);
+        } //end-while
+        return list;
+    } //end-toArrayList
+} //end-class:DB

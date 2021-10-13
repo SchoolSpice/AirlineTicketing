@@ -23,7 +23,7 @@ public class Menu {
         this.TITLE = TITLE;
         this.OPTIONS = OPTIONS;
         this.OPTION_ZERO = OPTION_ZERO;
-    }
+    } //end-Menu
 
     /* Calls printMenu() */
     /* Prompts the user to make a selection*/
@@ -46,7 +46,7 @@ public class Menu {
             rawInput = input.nextLine();
             /* try-catch for non int-type input */
             try {
-                    selection = Integer.parseInt(rawInput);
+                selection = Integer.parseInt(rawInput);
             } catch(Exception e) {
                 invalid(MENU_SIZE);
                 continue;	
@@ -58,22 +58,23 @@ public class Menu {
             } else {
                 invalid(MENU_SIZE);
             }
-            // input.close();
-        }        
+            // input.close();  // causes nextLine() to throw Exception ??
+        } //end-while
+		
         /* Return the user-selected menu option */
         return selection;
-    }
+    } //end-makeSelection
 
     /* Prints the menu and */
     /* automatically numbers each option */
     private void printMenu() {
         /* Instance variables for printMenu() */
         int optionNumber = 1;
-        int menuWidth = TITLE.length();
+        final int MENU_WIDTH = TITLE.length();
         /* Prints menu with formatting */
         System.out.println();
         System.out.println(TITLE);
-        printDashedLine(menuWidth);
+        printDashedLine(MENU_WIDTH);
         for (String prompt : OPTIONS) {
             System.out.println(optionNumber +
                 ") " +
@@ -81,16 +82,16 @@ public class Menu {
             optionNumber++;
         }
         System.out.println("0) " + OPTION_ZERO);
-        printDashedLine(menuWidth);
-    }
+        printDashedLine(MENU_WIDTH);
+    } //end-printMenu
 
     /* Prints a dashed line the same width as "TITLE" */
-    private void printDashedLine(int width) {
-        for (int i = width; i > 0; i--) {
+    private void printDashedLine(final int WIDTH) {
+        for (int i = WIDTH; i > 0; i--) {
             System.out.print("-");
         }
         System.out.println();			
-    }
+    } //end-printDashedLine
 
     /* Prints a console message after invalid entry */
     private void invalid(final int MENU_SIZE) {
@@ -98,5 +99,5 @@ public class Menu {
             "Please enter a number between 0 and " +
              MENU_SIZE +
             "\nTry again...\n");
-    }
-}
+    } //end-invalid
+} //end-class:Menu
