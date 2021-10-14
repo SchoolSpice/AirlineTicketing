@@ -84,14 +84,21 @@ public class KioskTerminal {
 
     private static void viewAllFlights() {
         Data data;
+        int chosenFlight;
         try {
-            data = Data.initialize();
+            data = Data.getInstance();
         }
         catch (Exception e) {
             System.out.println(e);
             return;
         }
-        data.flightList();
+        chosenFlight = data.getFlights();
+        try {
+            data.makeRes(chosenFlight);
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to make new resercation.");
+        }
     }
     
     private static void searchFlightsByLoc() {
@@ -99,12 +106,13 @@ public class KioskTerminal {
         Scanner input = new Scanner(System.in);
         String departure, arrival, date;
         Data data;
+        /* initialize dateValues with today's date */
         Date today = Calendar.getInstance().getTime();
         int[] dateValues = {today.getYear(),
                 today.getMonth(), today.getDay()};
         /* Try to access the data */
         try {
-            data = Data.initialize();
+            data = Data.getInstance();
         }
         catch (Exception e) {
             System.out.println(e);
@@ -126,19 +134,19 @@ public class KioskTerminal {
             System.out.println("Invalid Date: use format MM/DD/YY");
         }
         System.out.println("You entered... " + departure + " " + arrival +
-                " " + dateValues.toString());
-        // data.search(departure, arrival, dateValues);
+                " " + dateValues[0] + "/" + dateValues[1] + "/" + dateValues[2]);
+        data.search(departure, arrival, dateValues);
 } //end-searchFlightsByLoc
     
     private static void enterSQL() {
         Scanner input = new Scanner(System.in);
         String query;
         Data data;
-        
+        System.out.println("WARNING: Not yet working!");
         System.out.print("\nEnter SQL: ");
         query = input.nextLine();
         try {
-            data = Data.initialize();
+            data = Data.getInstance();
         } catch (Exception e) {
             System.out.println(e);
             System.out.println("Unable to initialize database.");

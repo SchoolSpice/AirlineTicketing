@@ -27,10 +27,10 @@ class Data {
         this.database = database;
     }
     
-    static Data initialize() throws Exception {
+    static Data getInstance() throws Exception {
         DB temp;
         try {
-            temp = DB.initialize();
+            temp = DB.getInstance();
         }
         catch (Exception e) {
             System.out.println(e);
@@ -39,44 +39,64 @@ class Data {
         return new Data(temp);
     }
     
-    void flightList() {
+    int getFlights() {
         Object[] records = {"Search failed: "};
+        int flightNo;
         try {
             records = database.allFlights().toArray();
         } catch (Exception e) {
             System.out.println(records);
             System.out.println(e);
         }
+        /*
         for (Object o : records) {
             System.out.println(o);
         }
+        */
+        try {
+            flightNo = ConsoleTable.pick(database.allFlights());
+            if(flightNo != 0) {
+                System.out.println("You selected flight # " + flightNo);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Flight list unavailable.");
+            return 0;
+        }
+        return flightNo;
     }
     
 	
-	void search(String departure, String arrival, int[] mdy) {
-            DB database;
-            ArrayList<String> results;
-            int flightNum;
-            boolean success = false;
-            try {
-                database = DB.initialize();
-            } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("Unable to connect to database.");
-                return;
-            }
-            try {
-                results = database.searchFlights(departure, arrival, mdy);
-            } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("Unable to search database.");
-            }
-            //TODO: do something with results
-            flightNum = ConsoleTable.pick(results);
-            
-	}
+    void search(String departure, String arrival, int[] mdy) {
+        DB database;
+        ArrayList<String> results = null;
+        int flightNum;
+        boolean success = false;
+        try {
+            database = DB.getInstance();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to connect to database.");
+            return;
+        }
+        try {
+            results = database.searchFlights(departure, arrival, mdy);
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to search database.");
+        }
+        //TODO: do something with results
+        flightNum = ConsoleTable.pick(results);
+        System.out.println("The flight no. you picked is... " + flightNum);
+    }
 	
+    
+    void makeRes(final int FLIGHT_ID) throws Exception {
+        
+    }
+    
     void runSQL(final String S) {
+        /*
         ResultSet results;
         ConsoleTable table;
         try {
@@ -99,24 +119,25 @@ class Data {
             System.out.println(e);
             System.out.println("Unable to display results.");
         }
+        */
     } //end-runSQL
     
     static int[] convert(String s) throws Exception {
-        String[] yearMonthDay;
+        String[] monthDayYear;
         int[] date = {0, 0, 0};
         try {
-            yearMonthDay = s.split("/");
+            monthDayYear = s.split("/");
         } catch (Exception e) {
             try {
-                yearMonthDay = s.split("-");
+                monthDayYear = s.split("-");
             } catch (Exception e2) {
-                yearMonthDay = s.split(" ");
+                monthDayYear = s.split(" ");
             }
         }
-        date[0] = Integer.parseInt(yearMonthDay[0]);
-        date[1] = Integer.parseInt(yearMonthDay[1]);
-        date[2] = Integer.parseInt(yearMonthDay[2]);
-        if(date[0] < 100) {date[0] += 2000;} // convert YY to YYYY
+        date[0] = Integer.parseInt(monthDayYear[0]);
+        date[1] = Integer.parseInt(monthDayYear[1]);
+        date[2] = Integer.parseInt(monthDayYear[2]);
+        if(date[2] < 100) {date[2] += 2000;} // convert YY to YYYY
         return date;
     } //end-convert
 }

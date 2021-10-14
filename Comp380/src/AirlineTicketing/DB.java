@@ -50,7 +50,7 @@ class DB {
         this.conn = conn;
     } //end-DB
     
-    static DB initialize() throws Exception {
+    static DB getInstance() throws Exception {
         Connection new_conn;
         if(single_instance == null) {
             try {
@@ -96,11 +96,9 @@ class DB {
 	
     ArrayList<String> allFlights() throws Exception {
         ResultSet results;
-        ArrayList<String> records = new ArrayList<String>();
         PreparedStatement query =
                 conn.prepareStatement("SELECT * FROM airlinedb.flights");
         results = query.executeQuery();
-        System.out.println("\n" + results.getMetaData());
         return toArrayList(results);
     } //end-allFlights
 	
@@ -111,7 +109,7 @@ class DB {
         System.out.println(results.toString());
         System.out.println("Number of columns: " + meta.getColumnCount());
         return results;
-    }
+    } //end-runQuery
     
     private ArrayList<String> toArrayList(ResultSet r) throws Exception {
         final String DELIMITER = "; ";
@@ -120,13 +118,17 @@ class DB {
             String flightInfo =
                     r.getString("idflights") +
                     DELIMITER +
+                    r.getString("departlocationid") +
+                    DELIMITER +
                     r.getString("departtime") +
                     DELIMITER +
                     r.getString("departdate") +
                     DELIMITER +
-                    r.getString("departlocationid") +
+                    r.getString("arrivallocationid") +
                     DELIMITER +
-                    r.getString("arrivallocationid");
+                    r.getString("arrivaltime") +
+                    DELIMITER +
+                    r.getString("arrivaldate");
             list.add(flightInfo);
         } //end-while
         return list;

@@ -86,7 +86,7 @@ public class Menu {
     } //end-printMenu
 
     /* Prints a dashed line the same width as "TITLE" */
-    private void printDashedLine(final int WIDTH) {
+    static void printDashedLine(final int WIDTH) {
         for (int i = WIDTH; i > 0; i--) {
             System.out.print("-");
         }
