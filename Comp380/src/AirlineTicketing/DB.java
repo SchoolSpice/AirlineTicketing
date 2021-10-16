@@ -32,10 +32,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Calendar;
+import java.math.BigDecimal;
 
 class DB {
     private static DB single_instance = null;
@@ -77,23 +77,71 @@ class DB {
         return toArrayList(query.executeQuery());
     } //end-searchFlights
     
-    private boolean insertCustomer(final String FIRST_NAME,
-            final String LAST_NAME) {
+    int insertCustomer(final String FIRST, final String LAST) {
+        ResultSet results;
+        Statement stmt;
+        BigDecimal id = new BigDecimal(0);
         try {
-            PreparedStatement insert =
-                    conn.prepareStatement("INSERT INTO customers (firstname,lastname)"
+            stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO customers (firstname,lastname)"
                     + "VALUES ('"
-                    + FIRST_NAME
+                    + FIRST
                     + "','"
-                    + LAST_NAME
-                    + "')");
-            insert.executeUpdate();
-            return true;
+                    + LAST
+                    + "')",
+                    Statement.RETURN_GENERATED_KEYS);
+            results = stmt.getGeneratedKeys();
+            while(results.next()){
+                id = results.getBigDecimal(1);
+            } //end-loop
+            results.close();
+            stmt.close();
         } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to insert customer into database.");
+            return 0;
+        } //end-try-catch
+        return id.intValue();
+    } //end-insertCustomer
+    
+    int insertConfirmation(final int FLIGHT_ID) {
+        ResultSet results;
+        Statement stmt;
+        BigDecimal id = new BigDecimal(0);
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO confirmations (flightid) VALUES ('"
+                    + FLIGHT_ID + "')",
+                    Statement.RETURN_GENERATED_KEYS);
+            results = stmt.getGeneratedKeys();
+            while(results.next()){
+                id = results.getBigDecimal(1);
+            } //end-loop
+            results.close();
+            stmt.close();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to insert \"flightid\" in confirmations.");
+            return 0;
+        } //end-try-catch
+        return id.intValue();
+    } //end-insertConfirmation
+    
+    boolean insertCustomerConfirmation(final int ID_CUST, final int ID_CONF) {
+        Statement stmt;
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO customerconfirmation VALUES ('"
+                    + ID_CUST + "', '" + ID_CONF + "')");
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to insert new record into \"customerconfirmation\"");
             return false;
         } //end-try-catch
-    } //end-insertCustomer
-	
+        return true;        
+    } //end-insertCustomerConfirmation
+    
+    
     ArrayList<String> allFlights() throws Exception {
         ResultSet results;
         PreparedStatement query =

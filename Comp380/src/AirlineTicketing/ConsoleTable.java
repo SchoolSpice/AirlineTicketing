@@ -33,7 +33,7 @@ class ConsoleTable {
         Object[] records = {"No records found."};
         int selection = 0;
         int remaining;
-        int count = 1;
+        int count = 0;
         try {
             records = list.toArray();
         } catch (Exception e) {
@@ -43,7 +43,7 @@ class ConsoleTable {
         remaining = records.length;
         Menu.printDashedLine(LINE_WIDTH);
         while(remaining > 0) {
-            System.out.println("(" + (count % 9) + ")  " + records[count - 1]);
+            System.out.println("(" + (count % 9 + 1) + ")  " + records[count]);
             count++;
             remaining--;
             if((count % 9 == 0) || (remaining == 0)) {

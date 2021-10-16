@@ -16,7 +16,6 @@
 
 package AirlineTicketing;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 
 class Data {
@@ -34,7 +33,7 @@ class Data {
         }
         catch (Exception e) {
             System.out.println(e);
-            return null;
+            throw new Exception("Unable to get database");
         }
         return new Data(temp);
     }
@@ -68,7 +67,6 @@ class Data {
     
 	
     void search(String departure, String arrival, int[] mdy) {
-        DB database;
         ArrayList<String> results = null;
         int flightNum;
         boolean success = false;
@@ -91,9 +89,25 @@ class Data {
     }
 	
     
-    void makeRes(final int FLIGHT_ID) throws Exception {
-        
-    }
+    int makeRes(final String[] CUSTOMER, final int FLIGHT_ID) {
+        int new_idcustomers, new_idconfirmations;
+        boolean made_reservation;
+        try {
+            database = DB.getInstance();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to connect to database.");
+        } //end-try-catch
+        new_idcustomers = database.insertCustomer(CUSTOMER[0], CUSTOMER[1]);
+        new_idconfirmations = database.insertConfirmation(FLIGHT_ID);
+        made_reservation = database.insertCustomerConfirmation(new_idcustomers,
+                new_idconfirmations);
+        if(made_reservation) {
+            return new_idconfirmations;
+        } else {
+            return 0;
+        } //end-if-else
+    } //end-makeRes
     
     void runSQL(final String S) {
         /*
@@ -140,4 +154,4 @@ class Data {
         if(date[2] < 100) {date[2] += 2000;} // convert YY to YYYY
         return date;
     } //end-convert
-}
+} //end-Class:Data

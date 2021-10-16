@@ -78,28 +78,90 @@ public class KioskTerminal {
         } //end-loop
     } //end-searchFlights
 
-    private static void viewRes() {}
+    private static void viewRes() {} //end-viewRes
 
-    private static void cancelRes() {}
+    private static void cancelRes() {} // end-cancelRes
 
     private static void viewAllFlights() {
         Data data;
-        int chosenFlight;
+        String[] customerInfo;
+        int chosenFlight, confirmation;
         try {
             data = Data.getInstance();
         }
         catch (Exception e) {
             System.out.println(e);
+            System.out.println("Unable to get data.");
             return;
-        }
+        } //end-try-catch
         chosenFlight = data.getFlights();
-        try {
-            data.makeRes(chosenFlight);
-        } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("Unable to make new resercation.");
-        }
-    }
+        if(chosenFlight == 0) {
+            System.out.println("No flight selected.");
+            return;
+        } //end-if
+        customerInfo = getInfo();
+        confirmation = data.makeRes(customerInfo, chosenFlight);
+        if(confirmation == 0) {
+            System.out.println("Reservation failed.");
+            return;
+        } else {
+            System.out.println("Reservation confirmed.");
+            System.out.println("Name: "
+                    + customerInfo[0] + " "
+                    + customerInfo[1]);
+            System.out.println("Confirmation #: " + confirmation);
+        } //end-if-else
+    } //end-viewAllFlights
+    
+    private static String[] getInfo() {
+        Scanner input = new Scanner(System.in);
+        String rawFirst, first, rawLast, last, rawEmail, email;
+        System.out.println("Please enter your information...");
+        while(true) {
+            System.out.print("First name: ");
+            rawFirst = input.nextLine().trim();
+            if(isOnlyLetters(rawFirst)) {
+                first = rawFirst;
+                break;
+            } else {
+                invalid("First name");
+            } //end-if-else
+        } //end-loop
+        while(true) {
+            System.out.print("Last name: ");
+            rawLast = input.nextLine().trim();
+            if(isOnlyLetters(rawLast)) {
+                last = rawLast;
+                break;
+            } else {
+                invalid("Last name");
+            } //end-if-else
+        } //end-loop
+        while(true) {
+            System.out.print("Email: ");
+            rawEmail = input.nextLine().trim();
+            if(isValidEmail(rawEmail)) {
+                email = rawEmail;
+                break;
+            } else {
+                invalid("Email");
+            } //end-if-else
+        } //end-loop
+        return new String[] {first, last, email};
+    } //end-getInfo
+    
+    private static boolean isOnlyLetters(String s) {
+        return s.matches("[a-zA-Z]+");
+    } //end-isOnlyLetters
+    
+    private static boolean isValidEmail(String s) {
+        //TODO: add logic to verify proper email format
+        return true;
+    } //end-isValidEmail
+    
+    private static void invalid(String s) {
+        System.out.println("\nINVALID [" + s + "]:  Try again...");
+    } //end-invalid
     
     private static void searchFlightsByLoc() {
         /* Variables */
@@ -136,7 +198,7 @@ public class KioskTerminal {
         System.out.println("You entered... " + departure + " " + arrival +
                 " " + dateValues[0] + "/" + dateValues[1] + "/" + dateValues[2]);
         data.search(departure, arrival, dateValues);
-} //end-searchFlightsByLoc
+    } //end-searchFlightsByLoc
     
     private static void enterSQL() {
         Scanner input = new Scanner(System.in);
@@ -153,10 +215,10 @@ public class KioskTerminal {
             return;
         }
         data.runSQL(query);
-    }
+    } //end-enterSQL
     
     private static void exitKiosk() {
         System.out.println("\nGoodbye...");
         System.exit(0);
-    }
-}
+    } //end-exitKiosk
+} //end-Class:KioskTerminal
