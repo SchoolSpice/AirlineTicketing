@@ -95,7 +95,7 @@ public class KioskTerminal {
             return;
         } //end-try-catch
         chosenFlight = data.getFlights();
-        if(chosenFlight == 0) {
+        if(chosenFlight <= 0) {
             System.out.println("No flight selected.");
             return;
         } //end-if
@@ -105,7 +105,7 @@ public class KioskTerminal {
             System.out.println("Reservation failed.");
             return;
         } else {
-            System.out.println("Reservation confirmed.");
+            System.out.println("\nReservation confirmed.");
             System.out.println("Name: "
                     + customerInfo[0] + " "
                     + customerInfo[1]);

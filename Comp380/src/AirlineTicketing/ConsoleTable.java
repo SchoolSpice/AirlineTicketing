@@ -52,7 +52,7 @@ class ConsoleTable {
                 if(count % 9 == 0)
                     realIndex = count - (10 - selection);
                 else
-                    realIndex = count - ((count % 9) - selection);
+                    realIndex = count - ((count % 9) - selection) - 1;
                 switch(selection) {
                     case -1: break;
                     case  0: return 0;
@@ -78,7 +78,7 @@ class ConsoleTable {
         return flightNo;
     } //end-getFlightID
     
-    /* this methods only returns 1 to 9 for a valid selection
+    /* this methods only returns 0 to 9 for a valid selection
      * or -1 for an invalid selection or "next page" choice */
     private static int enterSelection() {
         Scanner input = new Scanner(System.in);
@@ -98,7 +98,7 @@ class ConsoleTable {
             return -1;
         } finally {
             return selection;
-        } //end-try-catch
+        } //end-try-catch-finally
     } //end-enterSelection
     
     /*
