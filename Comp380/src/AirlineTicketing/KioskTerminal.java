@@ -25,7 +25,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.Calendar;
 import java.util.Date;
-// import java.sql.ResultSet;
+//import java.sql.ResultSet;
 
 public class KioskTerminal {
 	/***** MAIN MENU *****/
