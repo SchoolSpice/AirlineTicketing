@@ -153,7 +153,6 @@ public class KioskTerminal {
 	} // end-isOnlyLetters
 
 	private static boolean isValidEmail(String s) {
-		// TODO: add logic to verify proper email format
 		String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." + "[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-z"
 				+ "A-Z]{2,7}$";
 
