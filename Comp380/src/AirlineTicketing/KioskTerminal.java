@@ -39,7 +39,7 @@ public class KioskTerminal {
 	private static final String[] OPTIONS_SM1 = { "View All Flights", "Search Flights by Arrival/Destination" };
 	private static final String OPTION_ZERO_SM1 = "Return to Main Menu";
 	
-	/***** SUB MENU 2 (Future sub menu for delete/view) *****/
+	/***** SUB MENU 2 (Future sub menu for delete/view methods) *****/
 	/*
 	 * private static final String TITLE_SM2 = "Check a Reservation"; private static
 	 * final String[] OPTIONS_SM2 = {"Enter Name and Email"}; private static final
