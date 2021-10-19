@@ -142,6 +142,44 @@ class DB {
     } //end-insertCustomerConfirmation
     
     
+    int deleteConfirmation(final int FLIGHT_ID) {
+        ResultSet results;
+        Statement stmt;
+        BigDecimal id = new BigDecimal(0);
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO confirmations (flightid) VALUES ('"
+                    + FLIGHT_ID + "')",
+                    Statement.RETURN_GENERATED_KEYS);
+            results = stmt.getGeneratedKeys();
+            while(results.next()){
+                id = results.getBigDecimal(1);
+            } //end-loop
+            results.close();
+            stmt.close();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to insert \"flightid\" in confirmations.");
+            return 0;
+        } //end-try-catch
+        return id.intValue();
+    } //end-insertConfirmation
+    
+    boolean deleteCustomerConfirmation(final int ID_CUST, final int ID_CONF) {
+        Statement stmt;
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO customerconfirmation VALUES ('"
+                    + ID_CUST + "', '" + ID_CONF + "')");
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to insert new record into \"customerconfirmation\"");
+            return false;
+        } //end-try-catch
+        return true;        
+    } //end-insertCustomerConfirmation
+    
+    
     ArrayList<String> allFlights() throws Exception {
         ResultSet results;
         PreparedStatement query =
