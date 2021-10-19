@@ -44,7 +44,7 @@ public class KioskTerminal {
 	 * private static final String TITLE_SM2 = "Check a Reservation"; private static
 	 * final String[] OPTIONS_SM2 = {"Enter Name and Email"}; private static final
 	 * String OPTION_ZERO_SM2 = "Return to Main Menu";
-	 */
+	 */ 
 
 	public static void main(String args[]) throws IOException, InterruptedException {
 		// new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
