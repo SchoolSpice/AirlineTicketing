@@ -65,8 +65,8 @@ class Data {
         return flightNo;
     } //end-getFlights
     
-	
-    void search(String departure, String arrival, int[] mdy) {
+	//edit return type to int
+    int search(String departure, String arrival, int[] mdy) {
         ArrayList<String> results = null;
         int flightNum;
         boolean success = false;
@@ -75,7 +75,7 @@ class Data {
         } catch (Exception e) {
             System.out.println(e);
             System.out.println("Unable to connect to database.");
-            return;
+            return 0;
         } //end-try-catch
         try {
             results = database.searchFlights(departure, arrival, mdy);
@@ -83,9 +83,9 @@ class Data {
             System.out.println(e);
             System.out.println("Unable to search database.");
         } //end-try-catch
-        //TODO: do something with results
         flightNum = ConsoleTable.pick(results);
         System.out.println("The flight no. you picked is... " + flightNum);
+        return flightNum; //edit
     } //end-search
 	
     

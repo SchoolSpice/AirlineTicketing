@@ -38,6 +38,11 @@ public class KioskTerminal {
 	private static final String TITLE_SM1 = "Make a Reservation";
 	private static final String[] OPTIONS_SM1 = { "View All Flights", "Search Flights by Arrival/Destination" };
 	private static final String OPTION_ZERO_SM1 = "Return to Main Menu";
+	
+	/***** SUB MENU 2 *****/
+	private static final String TITLE_SM2 = "Check a Reservation";
+	private static final String[] OPTIONS_SM2 = {"Enter Name and Email"};
+	private static final String OPTION_ZERO_SM2 = "Return to Main Menu";
 
 	public static void main(String args[]) throws IOException, InterruptedException {
 		// new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -78,6 +83,16 @@ public class KioskTerminal {
 	} // end-searchFlights
 
 	private static void viewRes() {
+		Menu subMenu_2 = new Menu(TITLE_SM2, OPTIONS_SM2, OPTION_ZERO_SM2);
+		while (true) {
+			switch (subMenu_2.makeSelection()) {
+			case 0:
+				return;
+			case 1:
+				getInfo();
+			}
+		}
+			
 	} // end-viewRes
 
 	private static void cancelRes() {
@@ -172,6 +187,8 @@ public class KioskTerminal {
 		/* Variables */
 		Scanner input = new Scanner(System.in);
 		String departure, arrival, date;
+		String[] customerInfo2;
+		int confirmation2, chosenFlight2;
 		Data data;
 		/* initialize dateValues with today's date */
 		Date today = Calendar.getInstance().getTime();
@@ -201,7 +218,18 @@ public class KioskTerminal {
 		}
 		System.out.println("You entered... " + departure + " " + arrival + " " + dateValues[0] + "/" + dateValues[1]
 				+ "/" + dateValues[2]);
-		data.search(departure, arrival, dateValues);
+		chosenFlight2= data.search(departure, arrival, dateValues);
+		//Added
+		customerInfo2 = getInfo();
+		confirmation2 = data.makeRes(customerInfo2, chosenFlight2);
+		if (confirmation2 == 0) {
+			System.out.println("Reservation failed.");
+			return;
+		} else {
+			System.out.println("\nReservation confirmed.");
+			System.out.println("Name: " + customerInfo2[0] + " " + customerInfo2[1]);
+			System.out.println("Confirmation #: " + confirmation2);
+		}
 		input.close();
 	} // end-searchFlightsByLoc
 
