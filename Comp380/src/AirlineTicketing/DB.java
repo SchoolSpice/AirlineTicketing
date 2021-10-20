@@ -77,10 +77,6 @@ class DB {
         return toArrayList(query.executeQuery());
     } //end-searchFlights
     
-    int searchConfirmations(final String EMAIL) {
-        return 1;
-    } //end-searchConfirmations
-    
     int searchCustomers(final String EMAIL) {
         PreparedStatement query;
         ResultSet results;
