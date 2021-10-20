@@ -37,10 +37,14 @@ class ConsoleTable {
         try {
             records = list.toArray();
         } catch (Exception e) {
-            System.out.println(records);
             System.out.println(e);
-        }
+        } //end-try-catch
         remaining = records.length;
+        System.out.println(remaining + " records(s) found:");
+        if(remaining == 1) {
+            System.out.println(records[0]);
+            return getFirstField(records[0]);
+        } //end-if
         Menu.printDashedLine(LINE_WIDTH);
         while(remaining > 0) {
             System.out.println("(" + (count % 9 + 1) + ")  " + records[count]);
@@ -58,14 +62,14 @@ class ConsoleTable {
                     case  0: return 0;
                     case 1: case 2: case 3: case 4:
                     case 5: case 6: case 7: case 8:
-                    case 9: return getFlightID(records[realIndex]);
+                    case 9: return getFirstField(records[realIndex]);
                 } //end-switch
             } //end-if
         } //end-loop
         return selection;
     } //end-pick
     
-    private static int getFlightID(Object o) {
+    private static int getFirstField(Object o) {
         int flightNo = 0;
         String row = o.toString();
         String[] rowArray = row.split(";");
@@ -91,7 +95,7 @@ class ConsoleTable {
             selection = Integer.parseInt(rawInput);
             if(selection < 0 || selection > 9) {
                 throw new Exception("integer out of bounds");
-            }
+            } //end-if
         } catch (Exception e) {
             System.out.println("Next page...");
             Menu.printDashedLine(LINE_WIDTH);

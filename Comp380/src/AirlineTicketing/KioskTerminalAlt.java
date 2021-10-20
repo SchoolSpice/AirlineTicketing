@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 //import java.sql.Connection;
 //import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 //import java.sql.SQLException;
 //import java.sql.Statement;
 //import java.util.Random;
@@ -91,7 +92,8 @@ public class KioskTerminalAlt {
 			System.out.println("Is this correct?");
 			String answer = input.nextLine();
 			if (answer != "y") { // currently always assume yes (Could not get this to function properly)
-				System.out.println("Then lets get you reserved");
+				int customersRow, confirmationsRow, customerConfirmationRow;
+                                System.out.println("Then lets get you reserved");
 				System.out.println("What is your first name?");
 				String first = input.nextLine();
 				System.out.println("What is your last name?");
@@ -103,15 +105,18 @@ public class KioskTerminalAlt {
 				PreparedStatement postedcust = con.prepareStatement(
 						"INSERT INTO customers (firstname,lastname) VALUES ('" + first + "','" + last + "')");
 				postedcust.executeUpdate();
+                                
 				PreparedStatement postedconf = con
 						.prepareStatement("INSERT INTO confirmations (flightid) VALUES ('" + flightid + "')");
-				postedconf.executeUpdate();
+				confirmationsRow = postedconf.executeUpdate();
+                                
 				PreparedStatement postedcustconf = con.prepareStatement(
 						"INSERT INTO customerconfirmation VALUES ((Select Max(idcustomers) From airlinedb.customers Where firstname = '"
 								+ first + "' And lastname = '" + last
 								+ "'), (Select Max(idconfirmations) From airlinedb.confirmations Where flightid = '"
 								+ flightid + "'))");
-				postedcustconf.executeUpdate();
+				customerConfirmationRow = postedcustconf.executeUpdate();
+                                
 				PreparedStatement confirmation = con.prepareStatement(
 						"Select Max(idconfirmations) From airlinedb.confirmations Where flightid = '" + flightid + "'");
 				ResultSet confirmationset = confirmation.executeQuery();
