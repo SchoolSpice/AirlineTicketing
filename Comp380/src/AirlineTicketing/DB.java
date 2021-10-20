@@ -186,6 +186,7 @@ class DB {
             return 0;
         } //end-try-catch
         return id.intValue();
+
     } //end-deleteConfirmation
     
     boolean deleteCustomerConfirmation(final int ID_CUST, final int ID_CONF) {
@@ -196,6 +197,7 @@ class DB {
                     + ID_CUST + "', '" + ID_CONF + "')");
         } catch (Exception e) {
             System.out.println(e);
+
             System.out.println("Unable to insert new record into " +
                     "\"customerconfirmation\"");
             return false;
@@ -228,6 +230,8 @@ class DB {
         return toArrayList(results);
     } //end-searchConfirmations
     
+
+       
     ArrayList<String> allFlights() throws Exception {
         ResultSet results;
         PreparedStatement query =
