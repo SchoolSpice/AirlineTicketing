@@ -166,7 +166,7 @@ public class KioskTerminal {
 	} // end-getInfo
 
 	private static boolean isOnlyLetters(String s) {
-		return s.matches("[a-zA-Z]+");
+		return s.matches("[ a-zA-Z]+");
 	} // end-isOnlyLetters
 
 	private static boolean isValidEmail(String s) {

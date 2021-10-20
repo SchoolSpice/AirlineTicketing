@@ -94,7 +94,8 @@ class Data {
             System.out.println(e);
             throw new Exception("Unable to search \"confirmations\" by \"idcustomer\"");
         } //end-try-catch
-        System.out.println("Confirmation Number: " + confirmationNo);
+        if(confirmationNo > 0)
+            System.out.println("Confirmation Number: " + confirmationNo);
         return confirmationNo;
     } //end-getConfirmation
 	
