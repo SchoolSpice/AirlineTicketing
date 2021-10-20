@@ -244,4 +244,5 @@ public class KioskTerminal {
 		System.out.println("\nGoodbye...");
 		System.exit(0);
 	} // end-exitKiosk
+
 } // end-Class:KioskTerminal
