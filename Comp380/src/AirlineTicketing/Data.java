@@ -39,19 +39,7 @@ class Data {
     } //end-getInstance
     
     int getFlights() {
-        Object[] records = {"Search failed: "};
         int flightNo;
-        try {
-            records = database.allFlights().toArray();
-        } catch (Exception e) {
-            System.out.println(records);
-            System.out.println(e);
-        } //end-try-catch
-        /*
-        for (Object o : records) {
-            System.out.println(o);
-        }
-        */
         try {
             flightNo = ConsoleTable.pick(database.allFlights());
             if(flightNo > 0) {
@@ -65,7 +53,6 @@ class Data {
         return flightNo;
     } //end-getFlights
     
-	
     void search(String departure, String arrival, int[] mdy) {
         ArrayList<String> results = null;
         int flightNum;
@@ -87,18 +74,37 @@ class Data {
         flightNum = ConsoleTable.pick(results);
         System.out.println("The flight no. you picked is... " + flightNum);
     } //end-search
+    
+    int getConfirmation(final String EMAIL) throws Exception {
+        ArrayList<String> results;
+        int confirmationNo;
+        int idcustomers = database.searchCustomers(EMAIL);
+        if(idcustomers == 0)
+            throw new Exception("Email not found in database.");
+        if(idcustomers == -1)
+            throw new Exception("Unable to search \"customers\" in database.");
+        try {
+            results = database.searchConfirmations(idcustomers);
+            if(results !=  null) {
+                confirmationNo = ConsoleTable.pick(results);
+            } else {
+                throw new Exception("No confirmations found matching email.");
+            } //end-if-else
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new Exception("Unable to search \"confirmations\" by \"idcustomer\"");
+        } //end-try-catch
+        System.out.println("Confirmation Number: " + confirmationNo);
+        return confirmationNo;
+    } //end-getConfirmation
 	
     
     int makeRes(final String[] CUSTOMER, final int FLIGHT_ID) {
         int new_idcustomers, new_idconfirmations;
         boolean made_reservation;
-        try {
-            database = DB.getInstance();
-        } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("Unable to connect to database.");
-        } //end-try-catch
-        new_idcustomers = database.insertCustomer(CUSTOMER[0], CUSTOMER[1]);
+        new_idcustomers = database.searchCustomers(CUSTOMER[2]);
+        if(new_idcustomers <= 0)
+            new_idcustomers = database.insertCustomer(CUSTOMER[0], CUSTOMER[1], CUSTOMER[2]);
         new_idconfirmations = database.insertConfirmation(FLIGHT_ID);
         made_reservation = database.insertCustomerConfirmation(new_idcustomers,
                 new_idconfirmations);

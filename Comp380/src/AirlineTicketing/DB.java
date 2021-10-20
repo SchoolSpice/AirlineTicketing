@@ -65,7 +65,7 @@ class DB {
             return single_instance;
         } //end-if
         return single_instance;
-    } //end-initialize
+    } //end-getInstance
 	
     ArrayList<String> searchFlights(final String DEP, String ARR, final int[] MDY) throws Exception {
         PreparedStatement query =
@@ -77,18 +77,45 @@ class DB {
         return toArrayList(query.executeQuery());
     } //end-searchFlights
     
-    int insertCustomer(final String FIRST, final String LAST) {
+    int searchConfirmations(final String EMAIL) {
+        return 1;
+    } //end-searchConfirmations
+    
+    int searchCustomers(final String EMAIL) {
+        PreparedStatement query;
+        ResultSet results;
+        String idcustomerAsString;
+        int idcustomer;
+        try {
+            query = conn.prepareStatement("SELECT idcustomers from " +
+                    "airlinedb.customers WHERE email = ('" +
+                    EMAIL + "')");
+            results = query.executeQuery();
+            if(results.next()) {
+                idcustomerAsString = results.getString("idcustomers");
+                idcustomer = Integer.parseInt(idcustomerAsString);
+            } else {
+                return 0;
+            } //end-if-else       
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to search CUSTOMERS by EMAIL");
+            return -1;
+        } //end-try-catch
+        return idcustomer;
+    } //end-searchCustomers
+    
+    int insertCustomer(final String FIRST, final String LAST, final String EMAIL) {
         ResultSet results;
         Statement stmt;
         BigDecimal id = new BigDecimal(0);
         try {
             stmt = conn.createStatement();
-            stmt.executeUpdate("INSERT INTO customers (firstname,lastname)"
+            stmt.executeUpdate("INSERT INTO customers (firstname,lastname,email)"
                     + "VALUES ('"
-                    + FIRST
-                    + "','"
-                    + LAST
-                    + "')",
+                    + FIRST + "','"
+                    + LAST + "','"
+                    + EMAIL + "')",
                     Statement.RETURN_GENERATED_KEYS);
             results = stmt.getGeneratedKeys();
             while(results.next()){
@@ -142,6 +169,69 @@ class DB {
     } //end-insertCustomerConfirmation
     
     
+    int deleteConfirmation(final int FLIGHT_ID) {
+        ResultSet results;
+        Statement stmt;
+        BigDecimal id = new BigDecimal(0);
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO confirmations (flightid) VALUES ('"
+                    + FLIGHT_ID + "')",
+                    Statement.RETURN_GENERATED_KEYS);
+            results = stmt.getGeneratedKeys();
+            while(results.next()){
+                id = results.getBigDecimal(1);
+            } //end-loop
+            results.close();
+            stmt.close();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to insert \"flightid\" in confirmations.");
+            return 0;
+        } //end-try-catch
+        return id.intValue();
+    } //end-deleteConfirmation
+    
+    boolean deleteCustomerConfirmation(final int ID_CUST, final int ID_CONF) {
+        Statement stmt;
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO customerconfirmation VALUES ('"
+                    + ID_CUST + "', '" + ID_CONF + "')");
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to insert new record into " +
+                    "\"customerconfirmation\"");
+            return false;
+        } //end-try-catch
+        return true;        
+    } //end-deleteCustomerConfirmation
+    
+    
+    ArrayList<String> searchConfirmations(final int CUST_ID) throws Exception {
+        ResultSet results;
+        PreparedStatement query =
+                conn.prepareStatement("Select confirmations.idconfirmations as " + 
+                        "'Confirmation Number', flights.idflights as " + 
+                        "'Flight Number', flights.departdate as 'Date', " + 
+                        "flights.departtime as 'Time', " + 
+                        "departurelocations.idlocations as 'Departure Location', " + 
+                        "arrivallocations.idlocations as 'Arrival Location' " + 
+                        "From airlinedb.customers, airlinedb.confirmations, " + 
+                        "airlinedb.locations as departurelocations, " + 
+                        "airlinedb.locations as arrivallocations, " + 
+                        "airlinedb.customerconfirmation, airlinedb.flights " + 
+                        "Where customers.idcustomers=customerconfirmation.customerid " + 
+                        "And customerconfirmation.confirmationid = confirmations.idconfirmations " + 
+                        "And confirmations.flightid = flights.idflights " + 
+                        "And flights.departlocationid = departurelocations.idlocations " + 
+                        "And flights.arrivallocationid = arrivallocations.idlocations " + 
+                        "And customers.idcustomers = '" + 
+                        CUST_ID + "'");
+        results = query.executeQuery();
+        return toArrayList(results);
+    } //end-searchConfirmations
+    
     ArrayList<String> allFlights() throws Exception {
         ResultSet results;
         PreparedStatement query =
@@ -160,9 +250,16 @@ class DB {
     } //end-runQuery
     
     private ArrayList<String> toArrayList(ResultSet r) throws Exception {
+        ResultSetMetaData meta = r.getMetaData();
+        int columnCount = meta.getColumnCount();
         final String DELIMITER = "; ";
         ArrayList<String> list = new ArrayList<String>();
         while(r.next()) { 
+            String flightInfo = "";
+            for(int i = 1; i <= columnCount; i++){
+                flightInfo += r.getString(i) + DELIMITER;
+            } //end-loop
+            /*
             String flightInfo =
                     r.getString("idflights") +
                     DELIMITER +
@@ -177,6 +274,7 @@ class DB {
                     r.getString("arrivaltime") +
                     DELIMITER +
                     r.getString("arrivaldate");
+            */
             list.add(flightInfo);
         } //end-while
         return list;
