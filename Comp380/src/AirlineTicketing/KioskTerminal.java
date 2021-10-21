@@ -1,4 +1,3 @@
-<<<<<<< Upstream, based on origin/main
 /* Programmer:    Robert Mosier
  * Organization:  CSUN
  * Course:        COMP 380/L
@@ -77,26 +76,10 @@ public class KioskTerminal {
 	} // end-searchFlights
 
 	private static int viewRes() {
-            Data data;
-            int confirmation = 0;
-            String[] customerInfo = getInfo();
-            String email = customerInfo[2];
-            try {
-                data = Data.getInstance();
-            } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("Unable to get data.");
-                return -1;
-            } // end-try-catch
-            System.out.println("Searching for confirmations by email...");
-            try {
-                confirmation = data.getConfirmation(email);
-            } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("Returning to menu...");
-            } //end-try-catch
-            return confirmation;
-	} // end-viewRes
+		
+		
+	}
+} // end-viewRes
 
 	private static void cancelRes() {
 	} // end-cancelRes
@@ -246,7 +229,6 @@ public class KioskTerminal {
 		System.exit(0);
 	} // end-exitKiosk
 
-=======
 /* Programmer:    Robert Mosier
  * Organization:  CSUN
  * Course:        COMP 380/L
@@ -498,5 +480,4 @@ public class KioskTerminal {
 		System.out.println("\nGoodbye...");
 		System.exit(0);
 	} // end-exitKiosk
->>>>>>> 2381267 update
 } // end-Class:KioskTerminal
