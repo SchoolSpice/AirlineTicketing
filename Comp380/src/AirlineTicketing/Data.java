@@ -53,7 +53,7 @@ class Data {
         return flightNo;
     } //end-getFlights
     
-    void search(String departure, String arrival, int[] mdy) {
+    int search(String departure, String arrival, int[] mdy) {
         ArrayList<String> results = null;
         int flightNum;
         boolean success = false;
