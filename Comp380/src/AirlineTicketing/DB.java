@@ -186,7 +186,6 @@ class DB {
             return 0;
         } //end-try-catch
         return id.intValue();
-
     } //end-deleteConfirmation
     
     boolean deleteCustomerConfirmation(final int ID_CUST, final int ID_CONF) {

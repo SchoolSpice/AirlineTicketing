@@ -17,7 +17,8 @@
  * or why it changes.
  */
 
-package AirlineTicketing;
+
+ package AirlineTicketing;
 
 // import java.lang.Runtime;
 import java.io.IOException;
@@ -156,13 +157,11 @@ public class KioskTerminal {
 	private static boolean isValidEmail(String s) {
 		String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." + "[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-z"
 				+ "A-Z]{2,7}$";
-
 		Pattern pat = Pattern.compile(emailRegex);
 		if (s == null) {
 			return false;
 		}
 		return pat.matcher(s).matches();
-
 	} // end-isValidEmail
 
 	private static void invalid(String s) {
