@@ -130,7 +130,7 @@
      int insertConfirmation(final int FLIGHT_ID) {
          ResultSet results;
          Statement stmt;
-         BigDecimal id = new BigDecimal(0);
+         BigDecimal id = new BigDecimal(0);		
          try {
              stmt = conn.createStatement();
              stmt.executeUpdate("INSERT INTO confirmations (flightid) VALUES ('"

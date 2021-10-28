@@ -24,6 +24,9 @@ package AirlineTicketing;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
+import javax.sound.sampled.SourceDataLine;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -183,6 +186,14 @@ public class KioskTerminal {
 		} // end-loop
 		return new String[] { first, last, email };
 	} // end-getInfo
+
+	/*
+	private static int[] chooseSeats(final int FLIGHT_ID) throws Exception {
+		int firstSeats, busSeats, econSeats;
+		System.out.printf("Would you like to reserve seats on Flight #%d (Y/N)?: ", FLIGHT_ID);
+
+	}
+	*/
 
 	private static boolean isOnlyLetters(String s) {
 		return s.matches("[ a-zA-Z]+");
