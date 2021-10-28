@@ -70,10 +70,10 @@ class DB {
     ArrayList<String> searchFlights(final String DEP, String ARR, final int[] MDY) throws Exception {
         PreparedStatement query =
                 conn.prepareStatement("SELECT * FROM airlinedb.flights " +
-                "WHERE flights.departurelocationid = '" +
-                DEP + "', flights.arrivallocationid = '" +
-                ARR + "', flights.departdate = '" + MDY[0] +
-                "-" + MDY[1] + "-" + MDY[2] + "'");
+                "WHERE flights.departlocationid = '" +
+                DEP + "'AND flights.arrivallocationid = '" +
+                ARR + "'AND flights.departdate = '" + MDY[2] +
+                "-" + MDY[0] + "-" + MDY[1] + "'");
         return toArrayList(query.executeQuery());
     } //end-searchFlights
     
