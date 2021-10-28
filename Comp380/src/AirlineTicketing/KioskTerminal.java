@@ -17,7 +17,6 @@
  * or why it changes.
  */
 
- Testing: Bob's Workspace
 
 package AirlineTicketing;
 
@@ -100,6 +99,24 @@ public class KioskTerminal {
 	} // end-viewRes
 
 	private static void cancelRes() {
+		Data data;
+		int confirmationId;
+		
+		try {
+            data = Data.getInstance();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to get data.");
+            return;
+        } // end-try-catch
+		
+		confirmationId = viewRes();
+
+		System.out.println("Processing....");
+		data.cancelreservation(confirmationId);
+		
+		System.out.println("Reservation canceled successfully");
+		
 	} // end-cancelRes
 
 	private static void viewAllFlights() {
@@ -174,13 +191,11 @@ public class KioskTerminal {
 	private static boolean isValidEmail(String s) {
 		String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." + "[a-zA-Z0-9_+&*-]+)*@" + "(?:[a-zA-Z0-9-]+\\.)+[a-z"
 				+ "A-Z]{2,7}$";
-
 		Pattern pat = Pattern.compile(emailRegex);
 		if (s == null) {
 			return false;
 		}
 		return pat.matcher(s).matches();
-
 	} // end-isValidEmail
 
 	private static void invalid(String s) {
