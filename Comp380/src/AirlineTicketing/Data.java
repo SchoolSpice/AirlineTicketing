@@ -16,9 +16,11 @@
 
 package AirlineTicketing;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 class Data {
+
     DB database;
     
     private Data (DB database) {
@@ -53,7 +55,7 @@ class Data {
         return flightNo;
     } //end-getFlights
     
-    int search(String departure, String arrival, int[] mdy) {
+    void search(String departure, String arrival, int[] mdy) {
         ArrayList<String> results = null;
         int flightNum;
         boolean success = false;
@@ -114,6 +116,16 @@ class Data {
         return 0;
     } //end-makeRes
     
+    void cancelreservation(int CONFIRMATION_ID) {
+    	
+    	database.deleteConfirmation(CONFIRMATION_ID);
+    }
+    
+    /*
+    boolean checkRes(final int CONFIRMATION_ID) {
+    	database.searchConfirmations(CONFIRMATION_ID);
+    }
+    */
     void runSQL(final String S) {
         /*
         ResultSet results;

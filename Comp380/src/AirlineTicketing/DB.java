@@ -130,7 +130,7 @@ class DB {
     int insertConfirmation(final int FLIGHT_ID) {
         ResultSet results;
         Statement stmt;
-        BigDecimal id = new BigDecimal(0);
+        BigDecimal id = new BigDecimal(0);		
         try {
             stmt = conn.createStatement();
             stmt.executeUpdate("INSERT INTO confirmations (flightid) VALUES ('"
@@ -165,45 +165,24 @@ class DB {
     } //end-insertCustomerConfirmation
     
     
-    int deleteConfirmation(final int FLIGHT_ID) {
-        ResultSet results;
+    int deleteConfirmation(final int CONFIRM_ID) {
         Statement stmt;
-        BigDecimal id = new BigDecimal(0);
+        
         try {
-            stmt = conn.createStatement();
-            stmt.executeUpdate("INSERT INTO confirmations (flightid) VALUES ('"
-                    + FLIGHT_ID + "')",
-                    Statement.RETURN_GENERATED_KEYS);
-            results = stmt.getGeneratedKeys();
-            while(results.next()){
-                id = results.getBigDecimal(1);
-            } //end-loop
-            results.close();
+            stmt = conn.createStatement();    
+            stmt.executeUpdate("DELETE from airlinedb.customerconfirmation where confirmationid = ('"
+                    + CONFIRM_ID + "')");
+            stmt.executeUpdate("DELETE from airlinedb.confirmations where idconfirmations = ('"
+                    + CONFIRM_ID + "')");
             stmt.close();
         } catch (Exception e) {
             System.out.println(e);
-            System.out.println("Unable to insert \"flightid\" in confirmations.");
+            System.out.println("Unable to delete \"confirmationid\" in confirmations.");
             return 0;
         } //end-try-catch
-        return id.intValue();
+        
+        return 0;
     } //end-deleteConfirmation
-    
-    boolean deleteCustomerConfirmation(final int ID_CUST, final int ID_CONF) {
-        Statement stmt;
-        try {
-            stmt = conn.createStatement();
-            stmt.executeUpdate("INSERT INTO customerconfirmation VALUES ('"
-                    + ID_CUST + "', '" + ID_CONF + "')");
-        } catch (Exception e) {
-            System.out.println(e);
-
-            System.out.println("Unable to insert new record into " +
-                    "\"customerconfirmation\"");
-            return false;
-        } //end-try-catch
-        return true;        
-    } //end-deleteCustomerConfirmation
-    
     
     ArrayList<String> searchConfirmations(final int CUST_ID) throws Exception {
         ResultSet results;
