@@ -98,6 +98,24 @@ public class KioskTerminal {
 	} // end-viewRes
 
 	private static void cancelRes() {
+		Data data;
+		int confirmationId;
+		
+		try {
+            data = Data.getInstance();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Unable to get data.");
+            return;
+        } // end-try-catch
+		
+		confirmationId = viewRes();
+
+		System.out.println("Processing....");
+		data.cancelreservation(confirmationId);
+		
+		System.out.println("Reservation canceled successfully");
+		
 	} // end-cancelRes
 
 	private static void viewAllFlights() {

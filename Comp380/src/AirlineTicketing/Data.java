@@ -114,6 +114,16 @@ class Data {
         return 0;
     } //end-makeRes
     
+    void cancelreservation(int CONFIRMATION_ID) {
+    	
+    	database.deleteConfirmation(CONFIRMATION_ID);
+    }
+    
+    /*
+    boolean checkRes(final int CONFIRMATION_ID) {
+    	database.searchConfirmations(CONFIRMATION_ID);
+    }
+    */
     void runSQL(final String S) {
         /*
         ResultSet results;
