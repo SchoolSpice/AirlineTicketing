@@ -29,13 +29,18 @@ import java.util.Date;
 public class KioskTerminal {
 	/***** MAIN MENU *****/
 	private static final String TITLE_MM = "Airline Reservation Kiosk";
-	private static final String[] OPTIONS_MM = { "Search Flights", "View Reservation", "Cancel Reservation"};
+	private static final String[] OPTIONS_MM = { "Search Flights", "View Reservation", "Cancel Reservation" , "Dev Mode"};
 	private static final String OPTION_ZERO_MM = "Exit";
 
 	/***** SUB MENU 1 *****/
 	private static final String TITLE_SM1 = "Make a Reservation";
 	private static final String[] OPTIONS_SM1 = { "View All Flights", "Search Flights by Arrival/Destination" };
 	private static final String OPTION_ZERO_SM1 = "Return to Main Menu";
+
+	/***** SQL MENU *****/
+	private static final String TITLE_SQL = "SELECT STATEMENT";
+	private static final String[] OPTIONS_SQL = { "INSERT STATEMENT", "DELETE STATEMENT" };
+	private static final String OPTION_ZERO_SQL = "Return to Main Menu";
 
 	public static void main(String args[]) throws IOException, InterruptedException {
 		// new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -76,56 +81,56 @@ public class KioskTerminal {
 	} // end-searchFlights
 
 	private static int viewRes() {
-            Data data;
-            int confirmation = 0;
-            String[] customerInfo = getInfo();
-            String email = customerInfo[2];
-            try {
-                data = Data.getInstance();
-            } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("Unable to get data.");
-                return -1;
-            } // end-try-catch
-            System.out.println("Searching for confirmations by email...");
-            try {
-                confirmation = data.getConfirmation(email);
-            } catch (Exception e) {
-                System.out.println(e);
-                System.out.println("Returning to menu...");
-            } //end-try-catch
-            return confirmation;
+		Data data;
+		int confirmation = 0;
+		String[] customerInfo = getInfo();
+		String email = customerInfo[2];
+		try {
+			data = Data.getInstance();
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("Unable to get data.");
+			return -1;
+		} // end-try-catch
+		System.out.println("Searching for confirmations by email...");
+		try {
+			confirmation = data.getConfirmation(email);
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("Returning to menu...");
+		} // end-try-catch
+		return confirmation;
 	} // end-viewRes
 
 	private static void cancelRes() {
 	} // end-cancelRes
 
 	private static void viewAllFlights() {
-            Data data;
-            String[] customerInfo;
-            int chosenFlight, confirmation;
-            try {
-                    data = Data.getInstance();
-            } catch (Exception e) {
-                    System.out.println(e);
-                    System.out.println("Unable to get data.");
-                    return;
-            } // end-try-catch
-            chosenFlight = data.getFlights();
-            if (chosenFlight <= 0) {
-                    System.out.println("No flight selected.");
-                    return;
-            } // end-if
-            customerInfo = getInfo();
-            confirmation = data.makeRes(customerInfo, chosenFlight);
-            if (confirmation == 0) {
-                    System.out.println("Reservation failed.");
-                    return;
-            } else {
-                    System.out.println("\nReservation confirmed.");
-                    System.out.println("Name: " + customerInfo[0] + " " + customerInfo[1]);
-                    System.out.println("Confirmation #: " + confirmation);
-            } // end-if-else
+		Data data;
+		String[] customerInfo;
+		int chosenFlight, confirmation;
+		try {
+			data = Data.getInstance();
+		} catch (Exception e) {
+			System.out.println(e);
+			System.out.println("Unable to get data.");
+			return;
+		} // end-try-catch
+		chosenFlight = data.getFlights();
+		if (chosenFlight <= 0) {
+			System.out.println("No flight selected.");
+			return;
+		} // end-if
+		customerInfo = getInfo();
+		confirmation = data.makeRes(customerInfo, chosenFlight);
+		if (confirmation == 0) {
+			System.out.println("Reservation failed.");
+			return;
+		} else {
+			System.out.println("\nReservation confirmed.");
+			System.out.println("Name: " + customerInfo[0] + " " + customerInfo[1]);
+			System.out.println("Confirmation #: " + confirmation);
+		} // end-if-else
 	} // end-viewAllFlights
 
 	private static String[] getInfo() {
