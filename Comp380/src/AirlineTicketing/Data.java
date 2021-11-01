@@ -115,7 +115,17 @@ class Data {
             return new_idconfirmations;
         return 0;
     } //end-makeRes
-    
+
+    int[] availableSeats(final int FLIGHT_ID) throws Exception {
+        int[] seats = database.reservedSeats(FLIGHT_ID);
+        int[] max = database.maxSeats(FLIGHT_ID);
+        int[] available = new int[3];
+        available[0] = max[0] - seats[0];
+        available[1] = max[1] - seats[1];
+        available[2] = max[2] - seats[2];
+        return available;
+    } //end-availableSeats
+
     void cancelreservation(int CONFIRMATION_ID) {
     	
     	database.deleteConfirmation(CONFIRMATION_ID);

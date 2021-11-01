@@ -35,6 +35,7 @@
  import java.sql.Statement;
  import java.sql.PreparedStatement;
  import java.util.ArrayList;
+import java.util.FormatFlagsConversionMismatchException;
 
 import javax.sound.sampled.SourceDataLine;
 
@@ -104,7 +105,7 @@ import java.math.BigDecimal;
          return idcustomer;
      } //end-searchCustomers
 
-     int[] openSeats(final int FLIGHT_ID) throws Exception {
+     int[] reservedSeats(final int FLIGHT_ID) throws Exception {
         String[] sql = {
             "SELECT firstseats FROM airlinedb.confirmations WHERE flightid ='" + FLIGHT_ID + "'",
             "SELECT buiseats FROM airlinedb.confirmations WHERE flightid ='" + FLIGHT_ID + "'",
@@ -128,7 +129,23 @@ import java.math.BigDecimal;
             }
         } //end-for
         return searchSeats;
-     } //end-openSeats
+     } //end-reservedSeats
+
+     int[] maxSeats(final int FLIGHT_ID) throws Exception {
+        PreparedStatement query =
+                conn.prepareStatement("SELECT firstseats, buiseats, econseats FROM airlinedb.flights WHERE idflights='"
+                        + FLIGHT_ID + "'");
+        ResultSet results = query.executeQuery(); 
+        int[] seats = {0, 0, 0};
+        if (results.next()) {
+            for (int i = 1; i <= 3; i++) {
+                seats[i - 1] = results.getInt(i);
+            } //end-for
+        } else {
+            throw new Exception("Flight #" + FLIGHT_ID + " not found.");
+        } //end-if-else
+        return seats;
+     } //end-maxSeats
 
     private int sumSeats(ResultSet r) throws Exception {
         int accum = 0;
