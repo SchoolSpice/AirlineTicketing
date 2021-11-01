@@ -16,9 +16,11 @@
 
 package AirlineTicketing;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 class Data {
+
     DB database;
     
     private Data (DB database) {

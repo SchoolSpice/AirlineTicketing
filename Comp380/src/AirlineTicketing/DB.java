@@ -35,7 +35,10 @@
  import java.sql.Statement;
  import java.sql.PreparedStatement;
  import java.util.ArrayList;
- import java.math.BigDecimal;
+
+import javax.sound.sampled.SourceDataLine;
+
+import java.math.BigDecimal;
  
  class DB {
      private static DB single_instance = null;
@@ -100,6 +103,40 @@
          } //end-try-catch
          return idcustomer;
      } //end-searchCustomers
+
+     int[] openSeats(final int FLIGHT_ID) throws Exception {
+        String[] sql = {
+            "SELECT firstseats FROM airlinedb.confirmations WHERE flightid ='" + FLIGHT_ID + "'",
+            "SELECT buiseats FROM airlinedb.confirmations WHERE flightid ='" + FLIGHT_ID + "'",
+            "SELECT econseats FROM airlinedb.confirmations WHERE flightid ='" + FLIGHT_ID + "'"
+        };
+        /* For "searchSeats" array:
+         * First class = index 0
+         * Busines class = index 1
+         * Economy class = index 2
+         */
+        int[] searchSeats = {-1, -1, -1};
+        PreparedStatement query;
+        ResultSet results;
+        for (int i = 0; i < sql.length; i++) {
+            query = conn.prepareStatement(sql[i]);
+            results = query.executeQuery();
+            if(results.next()) {
+                searchSeats[i] = sumSeats(results);
+            } else {
+                searchSeats[i] = 0;
+            }
+        } //end-for
+        return searchSeats;
+     } //end-openSeats
+
+    private int sumSeats(ResultSet r) throws Exception {
+        int accum = 0;
+        do {
+            accum += r.getInt(1);
+        } while (r.next());
+        return accum;
+    } //end-sumSeats
      
      int insertCustomer(final String FIRST, final String LAST, final String EMAIL) {
          ResultSet results;
