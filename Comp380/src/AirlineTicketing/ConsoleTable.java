@@ -68,6 +68,10 @@ class ConsoleTable {
         } //end-loop
         return selection;
     } //end-pick
+
+    /*
+    private String format(Object o) {}
+    */
     
     private static int getFirstField(Object o) {
         int flightNo = 0;

@@ -102,13 +102,13 @@ class Data {
     } //end-getConfirmation
 	
     
-    int makeRes(final String[] CUSTOMER, final int FLIGHT_ID) {
+    int makeRes(final String[] CUSTOMER, final int FLIGHT_ID, final int[] SEATS) {
         int new_idcustomers, new_idconfirmations;
         boolean made_reservation;
         new_idcustomers = database.searchCustomers(CUSTOMER[2]);
         if(new_idcustomers <= 0)
             new_idcustomers = database.insertCustomer(CUSTOMER[0], CUSTOMER[1], CUSTOMER[2]);
-        new_idconfirmations = database.insertConfirmation(FLIGHT_ID);
+        new_idconfirmations = database.insertConfirmation(FLIGHT_ID, SEATS);
         made_reservation = database.insertCustomerConfirmation(new_idcustomers,
                 new_idconfirmations);
         if(made_reservation)

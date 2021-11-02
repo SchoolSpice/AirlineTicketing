@@ -137,7 +137,7 @@ public class KioskTerminal {
             String[] customerInfo;
             int chosenFlight, confirmation, totalOpen;
 			int[] openSeats; //0=First; 1=Business; 2=Economy
-			int[] toReserve;
+			int[] seatsToReserve;
             try {
                     data = Data.getInstance();
             } catch (Exception e) {
@@ -164,12 +164,12 @@ public class KioskTerminal {
 			}
             customerInfo = enterInfo();
 			try {
-				toReserve = chooseSeats(openSeats);
+				seatsToReserve = chooseSeats(openSeats);
 			} catch (Exception e) {
 				System.out.println(e);
 				return;
 			} //end-try-catch
-            confirmation = data.makeRes(customerInfo, chosenFlight, toReserve);
+            confirmation = data.makeRes(customerInfo, chosenFlight, seatsToReserve);
             if (confirmation == 0) {
                     System.out.println("Reservation failed.");
                     return;
@@ -354,7 +354,6 @@ public class KioskTerminal {
 		System.out.println("You entered... " + departure + " " + arrival + " " + dateValues[0] + "/" + dateValues[1]
 				+ "/" + dateValues[2]);
 		data.search(departure, arrival, dateValues);
-		input.close();
 	} // end-searchFlightsByLoc
 
 	private static void enterSQL() {

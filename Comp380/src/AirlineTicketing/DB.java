@@ -116,7 +116,7 @@ import java.math.BigDecimal;
          * Busines class = index 1
          * Economy class = index 2
          */
-        int[] searchSeats = {-1, -1, -1};
+        int[] searchSeats = new int[sql.length];
         PreparedStatement query;
         ResultSet results;
         for (int i = 0; i < sql.length; i++) {
@@ -181,14 +181,14 @@ import java.math.BigDecimal;
          return id.intValue();
      } //end-insertCustomer
      
-     int insertConfirmation(final int FLIGHT_ID) {
+     int insertConfirmation(final int FLIGHT_ID, final int[] SEATS) {
          ResultSet results;
          Statement stmt;
          BigDecimal id = new BigDecimal(0);		
          try {
              stmt = conn.createStatement();
-             stmt.executeUpdate("INSERT INTO confirmations (flightid) VALUES ('"
-                     + FLIGHT_ID + "')",
+             stmt.executeUpdate("INSERT INTO confirmations (flightid, firstseats, buiseats, econseats) VALUES ('"
+                     + FLIGHT_ID + "', '" + SEATS[0] + "', '" + SEATS[1] + "', '" + SEATS[2] + "')",
                      Statement.RETURN_GENERATED_KEYS);
              results = stmt.getGeneratedKeys();
              while(results.next()){
@@ -217,7 +217,18 @@ import java.math.BigDecimal;
          } //end-try-catch
          return true;        
      } //end-insertCustomerConfirmation
-     
+
+     /*
+     String fetchCity(final String CITY_CODE) throws Exception {
+        String loc = "";
+        PreparedStatement query =  ("SELECT locations.cityname, locations.statename FROM locations WHERE idlocations='"
+                + CITY_CODE + "'");
+        ResultSet results = query.executeQuery();
+        if(results.next()) {
+
+        }
+     }
+     */
      
      int deleteConfirmation(final int CONFIRM_ID) {
          Statement stmt;
