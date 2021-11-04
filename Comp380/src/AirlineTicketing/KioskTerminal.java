@@ -211,7 +211,9 @@ public class KioskTerminal {
 		/* Variables */
 		Scanner input = new Scanner(System.in);
 		String departure, arrival, date;
+		String[] customerInfo;
 		Data data;
+		int chosenFlight, confirmation;
 		/* initialize dateValues with today's date */
 		Date today = Calendar.getInstance().getTime();
 		int[] dateValues = { today.getYear(), today.getMonth(), today.getDay() };
@@ -240,8 +242,18 @@ public class KioskTerminal {
 		}
 		System.out.println("You entered... " + departure + " " + arrival + " " + dateValues[0] + "/" + dateValues[1]
 				+ "/" + dateValues[2]);
-		data.search(departure, arrival, dateValues);
-		input.close();
+		chosenFlight = data.search(departure, arrival, dateValues);
+		customerInfo = getInfo();
+		confirmation = data.makeRes(customerInfo, chosenFlight);
+		if (confirmation == 0) {
+			System.out.println("Reservation failed.");
+			return;
+		} else {
+			System.out.println("\nReservation confirmed.");
+			System.out.println("Name: " + customerInfo[0] + " " + customerInfo[1]);
+			System.out.println("Confirmation #: " + confirmation);
+		}
+		//input.close();
 	} // end-searchFlightsByLoc
 
 	private static void enterSQL() {
