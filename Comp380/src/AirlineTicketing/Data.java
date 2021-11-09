@@ -1,3 +1,4 @@
+
 /* Programmer:    Robert Mosier
  * Organization:  CSUN
  * Course:        Comp 380/L
@@ -102,20 +103,30 @@ class Data {
     } //end-getConfirmation
 	
     
-    int makeRes(final String[] CUSTOMER, final int FLIGHT_ID) {
+    int makeRes(final String[] CUSTOMER, final int FLIGHT_ID, final int[] SEATS) {
         int new_idcustomers, new_idconfirmations;
         boolean made_reservation;
         new_idcustomers = database.searchCustomers(CUSTOMER[2]);
         if(new_idcustomers <= 0)
             new_idcustomers = database.insertCustomer(CUSTOMER[0], CUSTOMER[1], CUSTOMER[2]);
-        new_idconfirmations = database.insertConfirmation(FLIGHT_ID);
+        new_idconfirmations = database.insertConfirmation(FLIGHT_ID, SEATS);
         made_reservation = database.insertCustomerConfirmation(new_idcustomers,
                 new_idconfirmations);
         if(made_reservation)
             return new_idconfirmations;
         return 0;
     } //end-makeRes
-    
+
+    int[] availableSeats(final int FLIGHT_ID) throws Exception {
+        int[] seats = database.reservedSeats(FLIGHT_ID);
+        int[] max = database.maxSeats(FLIGHT_ID);
+        int[] available = new int[3];
+        available[0] = max[0] - seats[0];
+        available[1] = max[1] - seats[1];
+        available[2] = max[2] - seats[2];
+        return available;
+    } //end-availableSeats
+
     void cancelreservation(int CONFIRMATION_ID) {
     	
     	database.deleteConfirmation(CONFIRMATION_ID);
