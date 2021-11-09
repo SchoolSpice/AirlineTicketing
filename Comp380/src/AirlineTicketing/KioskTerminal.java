@@ -18,25 +18,42 @@
  */
 
 
- package AirlineTicketing;
+package AirlineTicketing;
+
 
 // import java.lang.Runtime;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
+import javax.sound.sampled.SourceDataLine;
+
 import java.util.Calendar;
 import java.util.Date;
 
 public class KioskTerminal {
 	/***** MAIN MENU *****/
 	private static final String TITLE_MM = "Airline Reservation Kiosk";
-	private static final String[] OPTIONS_MM = { "Search Flights", "View Reservation", "Cancel Reservation"};
+
+	private static final String[] OPTIONS_MM = { "Search Flights", "View Reservation", "Cancel Reservation" };
+
 	private static final String OPTION_ZERO_MM = "Exit";
 
 	/***** SUB MENU 1 *****/
 	private static final String TITLE_SM1 = "Make a Reservation";
 	private static final String[] OPTIONS_SM1 = { "View All Flights", "Search Flights by Arrival/Destination" };
 	private static final String OPTION_ZERO_SM1 = "Return to Main Menu";
+
+
+	/***** SUB MENU 2 *****/
+	private static final String TITLE_SM2 = "Choose your section";
+	private static final String[] OPTIONS_SM2 = { "First Class", "Business Class", "Economy Class" };
+	private static final String OPTION_ZERO_SM2 = "Cancel";
+
+	/***** SUB MENU 3 *****/
+	private static final String TITLE_SM3 = "Reserve additional seats?";
+	private static final String[] OPTIONS_SM3 = { "Yes" };
+	private static final String OPTION_ZERO_SM3 = "No";
 
 	public static void main(String args[]) throws IOException, InterruptedException {
 		// new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -62,9 +79,9 @@ public class KioskTerminal {
 	} // end-main
 
 	private static void searchFlights() {
-		Menu subMenu_1 = new Menu(TITLE_SM1, OPTIONS_SM1, OPTION_ZERO_SM1);
+		Menu subMenu1 = new Menu(TITLE_SM1, OPTIONS_SM1, OPTION_ZERO_SM1);
 		while (true) {
-			switch (subMenu_1.makeSelection()) {
+			switch (subMenu1.makeSelection()) {
 			case 0:
 				return;
 			case 1:
@@ -77,9 +94,10 @@ public class KioskTerminal {
 	} // end-searchFlights
 
 	private static int viewRes() {
+
             Data data;
             int confirmation = 0;
-            String[] customerInfo = getInfo();
+            String[] customerInfo = enterInfo();
             String email = customerInfo[2];
             try {
                 data = Data.getInstance();
@@ -96,6 +114,7 @@ public class KioskTerminal {
                 System.out.println("Returning to menu...");
             } //end-try-catch
             return confirmation;
+
 	} // end-viewRes
 
 	private static void cancelRes() {
@@ -120,9 +139,12 @@ public class KioskTerminal {
 	} // end-cancelRes
 
 	private static void viewAllFlights() {
+
             Data data;
             String[] customerInfo;
-            int chosenFlight, confirmation;
+            int chosenFlight, confirmation, totalOpen;
+			int[] openSeats; //0=First; 1=Business; 2=Economy
+			int[] seatsToReserve;
             try {
                     data = Data.getInstance();
             } catch (Exception e) {
@@ -135,8 +157,26 @@ public class KioskTerminal {
                     System.out.println("No flight selected.");
                     return;
             } // end-if
-            customerInfo = getInfo();
-            confirmation = data.makeRes(customerInfo, chosenFlight);
+			try {
+				openSeats = data.availableSeats(chosenFlight);
+				totalOpen = openSeats[0] + openSeats[1] + openSeats[2];
+			} catch (Exception e) {
+				System.out.println(e);
+				System.out.println("Unable to retrieve seat information.");
+				return;
+			} //end-try-catch
+			if(totalOpen < 1) {
+				System.out.println("No seats available -- Select another flight.");
+				return;
+			}
+            customerInfo = enterInfo();
+			try {
+				seatsToReserve = chooseSeats(openSeats);
+			} catch (Exception e) {
+				System.out.println(e);
+				return;
+			} //end-try-catch
+            confirmation = data.makeRes(customerInfo, chosenFlight, seatsToReserve);
             if (confirmation == 0) {
                     System.out.println("Reservation failed.");
                     return;
@@ -144,10 +184,88 @@ public class KioskTerminal {
                     System.out.println("\nReservation confirmed.");
                     System.out.println("Name: " + customerInfo[0] + " " + customerInfo[1]);
                     System.out.println("Confirmation #: " + confirmation);
-            } // end-if-else
-	} // end-viewAllFlights
+            } //end-if-else
+	} //end-viewAllFlights
 
-	private static String[] getInfo() {
+
+	private static int[] chooseSeats(final int[] OPEN_SEATS) throws Exception {
+		int[] remaining = OPEN_SEATS;
+		int[] selected = {0, 0, 0};
+		int entry;
+		Menu subMenu2 = new Menu(TITLE_SM2, OPTIONS_SM2, OPTION_ZERO_SM2);
+		Menu subMenu3 = new Menu(TITLE_SM3, OPTIONS_SM3, OPTION_ZERO_SM3);
+		while(true) {
+			System.out.print("\nSeats available:  ");
+			System.out.print("First Class (" + remaining[0] + ") | ");
+			System.out.print("Business Class (" + remaining[1] + ") | ");
+			System.out.print("Economy Class (" + remaining[2] + ")");
+			switch(subMenu2.makeSelection()) {
+				case 1: try {
+							entry = numOfSeats(remaining[0]);
+						} catch (Exception e) {
+							System.out.println(e);
+							continue;
+						} //end-try-catch
+						remaining[0] -= entry;
+						selected[0] += entry;
+						break;
+				case 2:	try {
+							entry = numOfSeats(remaining[1]);
+						} catch (Exception e) {
+							System.out.println(e);
+							continue;
+						} //end-try-catch
+						remaining[1] -= entry;
+						selected[1] += entry;
+						break;
+				case 3:	try {
+							entry = numOfSeats(remaining[2]);
+						} catch (Exception e) {
+							System.out.println(e);
+							continue;
+						} //end-try-catch
+						remaining[2] -= entry;
+						selected[2] += entry;
+						break;
+				case 0: throw new Exception("Transaction cancelled.");
+			} //end-switch
+			System.out.print("\nSelected seats:  ");
+			System.out.print("First Class (" + selected[0] + ") | ");
+			System.out.print("Business Class (" + selected[1] + ") | ");
+			System.out.print("Economy Class (" + selected[2] + ")");
+			switch(subMenu3.makeSelection()) {
+				case 1: break;
+				case 0: return selected;
+			} //end-switch
+		} //end-loop
+	} //end-chooseSeats
+
+	private static int numOfSeats(final int MAX) throws Exception {
+		if(MAX < 1)
+			throw new Exception("No available seats in this section.");
+		Scanner input = new Scanner(System.in);
+		String rawInput;
+		int seats;
+		while(true) {
+			System.out.print("How many seats would you like to reserve (max="
+				+ MAX + ")? ");
+			rawInput = input.nextLine().trim();
+			try {
+				seats = Integer.parseInt(rawInput);
+			} catch (Exception e) {
+				invalid("number of seats");
+				continue;
+			} //end-try-catch
+			if(seats >= 0  && seats <= MAX) {
+				return seats;
+			} else {
+				System.out.println("Please enter a number between 0 and " + MAX);
+				System.out.println("Try again...");
+			} //end-if-else
+		} //end-loop
+	} //end-numOfSeats
+
+	private static String[] enterInfo() {
 		Scanner input = new Scanner(System.in);
 		String rawFirst, first, rawLast, last, rawEmail, email;
 		System.out.println("Please enter your information...");
@@ -159,8 +277,8 @@ public class KioskTerminal {
 				break;
 			} else {
 				invalid("First name");
-			} // end-if-else
-		} // end-loop
+			} //end-if-else
+		} //end-loop
 		while (true) {
 			System.out.print("Last name: ");
 			rawLast = input.nextLine().trim();
@@ -182,7 +300,15 @@ public class KioskTerminal {
 			} // end-if-else
 		} // end-loop
 		return new String[] { first, last, email };
-	} // end-getInfo
+	} // end-enterInfo
+
+	/*
+	private static int[] chooseSeats(final int FLIGHT_ID) throws Exception {
+		int firstSeats, busSeats, econSeats;
+		System.out.printf("Would you like to reserve seats on Flight #%d (Y/N)?: ", FLIGHT_ID);
+
+	}
+	*/
 
 	private static boolean isOnlyLetters(String s) {
 		return s.matches("[ a-zA-Z]+");
@@ -198,8 +324,8 @@ public class KioskTerminal {
 		return pat.matcher(s).matches();
 	} // end-isValidEmail
 
-	private static void invalid(String s) {
-		System.out.println("\nINVALID [" + s + "]:  Try again...");
+	private static void invalid(final String S) {
+		System.out.println("\nINVALID [" + S + "]:  Try again...");
 	} // end-invalid
 
 	private static void searchFlightsByLoc() {
@@ -236,7 +362,6 @@ public class KioskTerminal {
 		System.out.println("You entered... " + departure + " " + arrival + " " + dateValues[0] + "/" + dateValues[1]
 				+ "/" + dateValues[2]);
 		data.search(departure, arrival, dateValues);
-		input.close();
 	} // end-searchFlightsByLoc
 
 	private static void enterSQL() {
