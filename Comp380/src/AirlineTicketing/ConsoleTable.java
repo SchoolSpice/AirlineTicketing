@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
  
 class ConsoleTable {
+    static final int FLIGHT_TABLE_WIDTH = 136;
     static final int LINE_WIDTH = 36;
     // ResultSet data;
     // ResultSetMetaData meta;
@@ -29,7 +30,11 @@ class ConsoleTable {
     // private String[] columnNames;
     // private int[] columnWidths;
 	
-    static int pick(ArrayList<String> list) {
+    static int pick(ArrayList<String> list, final char FLAG) {
+        /* Flag:
+            Flights header = f
+            Confirmations header = c
+        */
         Object[] records = {"No records found."};
         int selection = 0;
         int remaining;
@@ -42,12 +47,36 @@ class ConsoleTable {
         remaining = records.length;
         System.out.println(remaining + " records(s) found:");
         if(remaining == 1) {
-            System.out.println(records[0]);
+
+		//Start of table
+            printHeader(FLAG);  
+		//Splits a record (row) into field elements 
+            String[] singleRecord = ((String) records[0]).split(";");
+		//.format uses %(num)s to mean character spaces - pads the elements to format table
+            System.out.format("%5s %4s %20s %10s %20s %10s %12s %8s %20s %10s %10s", " ", singleRecord[0], 
+                    		singleRecord[1], singleRecord[2], singleRecord[3], singleRecord[4], 
+                   		 singleRecord[5], singleRecord[6], "First:" + singleRecord[7], 
+                            	"Bus:" + singleRecord[8], "Econ:" + singleRecord[9]);
+            System.out.println();
+		//end of table format
             return getFirstField(records[0]);
         } //end-if
         Menu.printDashedLine(LINE_WIDTH);
+	//Start of table
+        printHeader(FLAG);
         while(remaining > 0) {
-            System.out.println("(" + (count % 9 + 1) + ")  " + records[count]);
+            System.out.print("(" + (count % 9 + 1) + ") ");
+	    //Splits a record (row) into field elements 
+            String[] splitRecord = ((String) records[count]).split(";"); 
+	    //.format uses %(num)s to mean character spaces - pads the elements to format table
+            System.out.format("|%5s %20s %10s %20s %10s %12s %8s %20s %10s %10s", splitRecord[0], 
+			      splitRecord[1], splitRecord[2], splitRecord[3], splitRecord[4], 
+			      splitRecord[5], splitRecord[6], "First:" + splitRecord[7], 
+            		      "Bus:" + splitRecord[8], "Econ:" + splitRecord[9]);
+            System.out.println("");
+            System.out.println("    |");
+	    //end of table format
+
             count++;
             remaining--;
             if((count % 9 == 0) || (remaining == 0)) {
@@ -69,9 +98,31 @@ class ConsoleTable {
         return selection;
     } //end-pick
 
-    /*
-    private String format(Object o) {}
-    */
+    private static void printHeader(final char FLAG) {
+        if(FLAG == 'f')
+            printHeaderForFlights();
+        if(FLAG == 'c')
+            printHeaderForConfirmations();
+    } //end-printHeader
+
+    private static void printHeaderForFlights() {
+        System.out.print("    ");
+        Menu.printDashedLine(FLIGHT_TABLE_WIDTH);
+        System.out.printf("%5s %2s %29s %30s %18s %3s %30s\n", " ", 
+                  		"FLIGHT #", "DEPARTURE TIME & DATE", "ARRIVAL TIME & DATE", 
+              			"FROM  ->", "TO", "SEATS AVAILABLE");
+        Menu.printDashedLine(FLIGHT_TABLE_WIDTH);
+    } //end-printHeaderForFlights
+
+    private static void printHeaderForConfirmations() {
+        System.out.print("    ");
+        Menu.printDashedLine(FLIGHT_TABLE_WIDTH);
+        System.out.printf("%5s %2s %29s %30s %18s %3s %30s\n", " ", 
+                  		"CONF#", "FLIGHT#", "DEPARTURE TIME & DATE",  
+              			"FROM  ->", "TO", "SEATS RESERVED");
+        Menu.printDashedLine(FLIGHT_TABLE_WIDTH);
+    } //end-printHeaderForConfirmations
+    
     
     private static int getFirstField(Object o) {
         int flightNo = 0;
@@ -92,8 +143,8 @@ class ConsoleTable {
         Scanner input = new Scanner(System.in);
         int selection = -1;
         Menu.printDashedLine(LINE_WIDTH);
-        System.out.println("Choose flight 1 thru 9 (or 0 to Exit)");
-        System.out.print("Press ENTER for more flights: ");
+        System.out.println("Choose 1 thru 9 (or 0 to Exit)");
+        System.out.print("Press ENTER for more records: ");
         String rawInput = input.nextLine();
         try {
             selection = Integer.parseInt(rawInput);
@@ -103,6 +154,18 @@ class ConsoleTable {
         } catch (Exception e) {
             System.out.println("Next page...");
             Menu.printDashedLine(LINE_WIDTH);
+
+	    System.out.println("    --------------------------------------------------"
+        			+ "---------------------------------------------------"
+        			+ "-----------------------------------");  
+            System.out.printf("%5s %2s %29s %30s %18s %3s %30s", " ", 
+        		  "FLIGHT #", "DEPARTURE TIME & DATE", "ARRIVAL TIME & DATE", 
+			  "FROM  ->", "TO", "SEATS AVAILABLE");  
+            System.out.println();  
+            System.out.println("    --------------------------------------------------"
+				+ "---------------------------------------------------"
+        			+ "-----------------------------------"); 		
+
             return -1;
         } finally {
             return selection;

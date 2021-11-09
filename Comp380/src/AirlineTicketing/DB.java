@@ -132,6 +132,7 @@ import java.math.BigDecimal;
      } //end-reservedSeats
 
      int[] maxSeats(final int FLIGHT_ID) throws Exception {
+
         PreparedStatement query =
                 conn.prepareStatement("SELECT firstseats, buiseats, econseats FROM airlinedb.flights WHERE idflights='"
                         + FLIGHT_ID + "'");
@@ -257,7 +258,10 @@ import java.math.BigDecimal;
                          "'Flight Number', flights.departdate as 'Date', " + 
                          "flights.departtime as 'Time', " + 
                          "departurelocations.idlocations as 'Departure Location', " + 
-                         "arrivallocations.idlocations as 'Arrival Location' " + 
+                         "arrivallocations.idlocations as 'Arrival Location', " +
+                         "confirmations.firstseats as 'First Class Seats', " +
+                         "confirmations.buiseats as 'Business Class Seats', " +
+                         "confirmations.econseats as 'Economy Class Seats' " +
                          "From airlinedb.customers, airlinedb.confirmations, " + 
                          "airlinedb.locations as departurelocations, " + 
                          "airlinedb.locations as arrivallocations, " + 
