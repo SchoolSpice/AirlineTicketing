@@ -132,6 +132,7 @@ import java.math.BigDecimal;
      } //end-reservedSeats
 
      int[] maxSeats(final int FLIGHT_ID) throws Exception {
+
         PreparedStatement query =
                 conn.prepareStatement("SELECT firstseats, buiseats, econseats FROM airlinedb.flights WHERE idflights='"
                         + FLIGHT_ID + "'");
