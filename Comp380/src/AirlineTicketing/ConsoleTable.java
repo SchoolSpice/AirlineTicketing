@@ -116,13 +116,13 @@ class ConsoleTable {
             Menu.printDashedLine(LINE_WIDTH);
             System.out.println("    --------------------------------------------------"
 					+ "---------------------------------------------------"
-					+ "---------------------------------");  
-            System.out.printf("%5s %2s %29s %30s %16s %3s %30s", " ", 
+					+ "-----------------------------------");  
+            System.out.printf("%5s %2s %29s %30s %18s %3s %30s", " ", 
 		          "FLIGHT #", "DEPARTURE TIME & DATE", "ARRIVAL TIME & DATE", "FROM  ->", "TO", "SEATS AVAILABLE");  
             System.out.println();  
             System.out.println("    --------------------------------------------------"
 					+ "---------------------------------------------------"
-					+ "---------------------------------");   
+					+ "-----------------------------------");  
             return -1;
         } finally {
             return selection;
