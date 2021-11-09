@@ -46,8 +46,23 @@ class ConsoleTable {
             return getFirstField(records[0]);
         } //end-if
         Menu.printDashedLine(LINE_WIDTH);
+        System.out.println("    --------------------------------------------------"
+        					+ "---------------------------------------------------"
+        					+ "-----------------------------------");  
+        System.out.printf("%5s %2s %29s %30s %18s %3s %30s", " ", 
+        		          "FLIGHT #", "DEPARTURE TIME & DATE", "ARRIVAL TIME & DATE", "FROM  ->", "TO", "SEATS AVAILABLE");  
+        System.out.println();  
+        System.out.println("    --------------------------------------------------"
+							+ "---------------------------------------------------"
+        					+ "-----------------------------------");    
         while(remaining > 0) {
-            System.out.println("(" + (count % 9 + 1) + ")  " + records[count]);
+            System.out.print("(" + (count % 9 + 1) + ") ");
+            String[] splitRecord = ((String) records[count]).split(";"); 
+            System.out.format("|%5s %20s %10s %20s %10s %12s %8s %20s %10s %10s", splitRecord[0], splitRecord[1], splitRecord[2], 
+            				  splitRecord[3], splitRecord[4], splitRecord[5], splitRecord[6], "First:" + splitRecord[7], 
+            				  "Bus:" + splitRecord[8], "Econ:" + splitRecord[9]);
+            System.out.println("");
+            System.out.println("    |");
             count++;
             remaining--;
             if((count % 9 == 0) || (remaining == 0)) {
@@ -99,6 +114,15 @@ class ConsoleTable {
         } catch (Exception e) {
             System.out.println("Next page...");
             Menu.printDashedLine(LINE_WIDTH);
+            System.out.println("    --------------------------------------------------"
+					+ "---------------------------------------------------"
+					+ "---------------------------------");  
+            System.out.printf("%5s %2s %29s %30s %16s %3s %30s", " ", 
+		          "FLIGHT #", "DEPARTURE TIME & DATE", "ARRIVAL TIME & DATE", "FROM  ->", "TO", "SEATS AVAILABLE");  
+            System.out.println();  
+            System.out.println("    --------------------------------------------------"
+					+ "---------------------------------------------------"
+					+ "---------------------------------");   
             return -1;
         } finally {
             return selection;
