@@ -20,6 +20,7 @@
 
 package AirlineTicketing;
 
+
 // import java.lang.Runtime;
 import java.io.IOException;
 import java.util.Scanner;
@@ -33,13 +34,16 @@ import java.util.Date;
 public class KioskTerminal {
 	/***** MAIN MENU *****/
 	private static final String TITLE_MM = "Airline Reservation Kiosk";
+
 	private static final String[] OPTIONS_MM = { "Search Flights", "View Reservation", "Cancel Reservation" };
+
 	private static final String OPTION_ZERO_MM = "Exit";
 
 	/***** SUB MENU 1 *****/
 	private static final String TITLE_SM1 = "Make a Reservation";
 	private static final String[] OPTIONS_SM1 = { "View All Flights", "Search Flights by Arrival/Destination" };
 	private static final String OPTION_ZERO_SM1 = "Return to Main Menu";
+
 
 	/***** SUB MENU 2 *****/
 	private static final String TITLE_SM2 = "Choose your section";
@@ -90,6 +94,7 @@ public class KioskTerminal {
 	} // end-searchFlights
 
 	private static int viewRes() {
+
             Data data;
             int confirmation = 0;
             String[] customerInfo = enterInfo();
@@ -109,6 +114,7 @@ public class KioskTerminal {
                 System.out.println("Returning to menu...");
             } //end-try-catch
             return confirmation;
+
 	} // end-viewRes
 
 	private static void cancelRes() {
@@ -133,6 +139,7 @@ public class KioskTerminal {
 	} // end-cancelRes
 
 	private static void viewAllFlights() {
+
             Data data;
             String[] customerInfo;
             int chosenFlight, confirmation, totalOpen;
@@ -179,6 +186,7 @@ public class KioskTerminal {
                     System.out.println("Confirmation #: " + confirmation);
             } //end-if-else
 	} //end-viewAllFlights
+
 
 	private static int[] chooseSeats(final int[] OPEN_SEATS) throws Exception {
 		int[] remaining = OPEN_SEATS;
