@@ -273,8 +273,6 @@ import java.math.BigDecimal;
          return toArrayList(results);
      } //end-searchConfirmations
      
- 
-        
      ArrayList<String> allFlights() throws Exception {
          ResultSet results;
          PreparedStatement query =
