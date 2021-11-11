@@ -332,7 +332,9 @@ public class KioskTerminal {
 		/* Variables */
 		Scanner input = new Scanner(System.in);
 		String departure, arrival, date;
+		String[] customerInfo;
 		Data data;
+		int chosenFlight, confirmation;
 		/* initialize dateValues with today's date */
 		Date today = Calendar.getInstance().getTime();
 		int[] dateValues = { today.getYear(), today.getMonth(), today.getDay() };
@@ -361,7 +363,9 @@ public class KioskTerminal {
 		}
 		System.out.println("You entered... " + departure + " " + arrival + " " + dateValues[0] + "/" + dateValues[1]
 				+ "/" + dateValues[2]);
+
 		data.search(departure, arrival, dateValues);
+
 	} // end-searchFlightsByLoc
 
 	private static void enterSQL() {

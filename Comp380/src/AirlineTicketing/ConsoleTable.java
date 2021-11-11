@@ -46,6 +46,7 @@ class ConsoleTable {
             return getFirstField(records[0]);
         } //end-if
         Menu.printDashedLine(LINE_WIDTH);
+
 	System.out.println("    --------------------------------------------------"
         			+ "---------------------------------------------------"
         			+ "-----------------------------------");  
@@ -68,6 +69,7 @@ class ConsoleTable {
             System.out.println("");
             System.out.println("    |");
 	    //end of table format
+
             count++;
             remaining--;
             if((count % 9 == 0) || (remaining == 0)) {
@@ -123,6 +125,7 @@ class ConsoleTable {
         } catch (Exception e) {
             System.out.println("Next page...");
             Menu.printDashedLine(LINE_WIDTH);
+
 	    System.out.println("    --------------------------------------------------"
         			+ "---------------------------------------------------"
         			+ "-----------------------------------");  
@@ -133,6 +136,7 @@ class ConsoleTable {
             System.out.println("    --------------------------------------------------"
 				+ "---------------------------------------------------"
         			+ "-----------------------------------"); 		
+
             return -1;
         } finally {
             return selection;
