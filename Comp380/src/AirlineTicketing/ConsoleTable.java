@@ -42,27 +42,32 @@ class ConsoleTable {
         remaining = records.length;
         System.out.println(remaining + " records(s) found:");
         if(remaining == 1) {
+
+		//Start of table
             System.out.println("    --------------------------------------------------"
-                    + "---------------------------------------------------"
-                    + "-----------------------------------");  
+                    		+ "---------------------------------------------------"
+                    		+ "-----------------------------------");  
             System.out.printf("%5s %2s %29s %30s %18s %3s %30s", " ", 
-                  "FLIGHT #", "DEPARTURE TIME & DATE", "ARRIVAL TIME & DATE", 
-              "FROM  ->", "TO", "SEATS AVAILABLE");  
+                  		"FLIGHT #", "DEPARTURE TIME & DATE", "ARRIVAL TIME & DATE", 
+              			"FROM  ->", "TO", "SEATS AVAILABLE");  
             System.out.println();  
             System.out.println("    --------------------------------------------------"
-                + "---------------------------------------------------"
-                    + "-----------------------------------");  
+                		+ "---------------------------------------------------"
+                    		+ "-----------------------------------");  
+		//Splits a record (row) into field elements 
             String[] singleRecord = ((String) records[0]).split(";");
+		//.format uses %(num)s to mean character spaces - pads the elements to format table
             System.out.format("%5s %4s %20s %10s %20s %10s %12s %8s %20s %10s %10s", " ", singleRecord[0], 
-                    singleRecord[1], singleRecord[2], singleRecord[3], singleRecord[4], 
-                    singleRecord[5], singleRecord[6], "First:" + singleRecord[7], 
-                            "Bus:" + singleRecord[8], "Econ:" + singleRecord[9]);
+                    		singleRecord[1], singleRecord[2], singleRecord[3], singleRecord[4], 
+                   		 singleRecord[5], singleRecord[6], "First:" + singleRecord[7], 
+                            	"Bus:" + singleRecord[8], "Econ:" + singleRecord[9]);
             System.out.println();
+		//end of table format
             return getFirstField(records[0]);
         } //end-if
         Menu.printDashedLine(LINE_WIDTH);
-
-        System.out.println("    --------------------------------------------------"
+	//Start of table
+	System.out.println("    --------------------------------------------------"
         			+ "---------------------------------------------------"
         			+ "-----------------------------------");  
         System.out.printf("%5s %2s %29s %30s %18s %3s %30s", " ", 
