@@ -334,7 +334,9 @@ public class KioskTerminal {
 		String departure, arrival, date;
 		String[] customerInfo;
 		Data data;
-		int chosenFlight, confirmation;
+		int[] openSeats; //0=First; 1=Business; 2=Economy
+        	int[] seatsToReserve;
+		int chosenFlight, confirmation, totalOpen;
 		/* initialize dateValues with today's date */
 		Date today = Calendar.getInstance().getTime();
 		int[] dateValues = { today.getYear(), today.getMonth(), today.getDay() };
@@ -364,8 +366,39 @@ public class KioskTerminal {
 		System.out.println("You entered... " + departure + " " + arrival + " " + dateValues[0] + "/" + dateValues[1]
 				+ "/" + dateValues[2]);
 
-		data.search(departure, arrival, dateValues);
-
+		chosenFlight = data.search(departure, arrival, dateValues);
+		if (chosenFlight <= 0) {
+		    System.out.println("No flight selected.");
+		    return;
+		} // end-if
+		try {
+		    openSeats = data.availableSeats(chosenFlight);
+		    totalOpen = openSeats[0] + openSeats[1] + openSeats[2];
+		} catch (Exception e) {
+		    System.out.println(e);
+		    System.out.println("Unable to retrieve seat information.");
+		    return;
+		} //end-try-catch
+		if(totalOpen < 1) {
+		    System.out.println("No seats available -- Select another flight.");
+		    return;
+		}
+		customerInfo = enterInfo();
+		try {
+		    seatsToReserve = chooseSeats(openSeats);
+		} catch (Exception e) {
+		    System.out.println(e);
+		    return;
+		} //end-try-catch
+		confirmation = data.makeRes(customerInfo, chosenFlight, seatsToReserve);
+		if (confirmation == 0) {
+			System.out.println("Reservation failed.");
+			return;
+		} else {
+			System.out.println("\nReservation confirmed.");
+			System.out.println("Name: " + customerInfo[0] + " " + customerInfo[1]);
+			System.out.println("Confirmation #: " + confirmation);
+		} //end-if-else
 	} // end-searchFlightsByLoc
 
 	private static void enterSQL() {
