@@ -42,12 +42,27 @@ class ConsoleTable {
         remaining = records.length;
         System.out.println(remaining + " records(s) found:");
         if(remaining == 1) {
-            System.out.println(records[0]);
+            System.out.println("    --------------------------------------------------"
+                    + "---------------------------------------------------"
+                    + "-----------------------------------");  
+            System.out.printf("%5s %2s %29s %30s %18s %3s %30s", " ", 
+                  "FLIGHT #", "DEPARTURE TIME & DATE", "ARRIVAL TIME & DATE", 
+              "FROM  ->", "TO", "SEATS AVAILABLE");  
+            System.out.println();  
+            System.out.println("    --------------------------------------------------"
+                + "---------------------------------------------------"
+                    + "-----------------------------------");  
+            String[] singleRecord = ((String) records[0]).split(";");
+            System.out.format("%5s %4s %20s %10s %20s %10s %12s %8s %20s %10s %10s", " ", singleRecord[0], 
+                    singleRecord[1], singleRecord[2], singleRecord[3], singleRecord[4], 
+                    singleRecord[5], singleRecord[6], "First:" + singleRecord[7], 
+                            "Bus:" + singleRecord[8], "Econ:" + singleRecord[9]);
+            System.out.println();
             return getFirstField(records[0]);
         } //end-if
         Menu.printDashedLine(LINE_WIDTH);
 
-	System.out.println("    --------------------------------------------------"
+        System.out.println("    --------------------------------------------------"
         			+ "---------------------------------------------------"
         			+ "-----------------------------------");  
         System.out.printf("%5s %2s %29s %30s %18s %3s %30s", " ", 
