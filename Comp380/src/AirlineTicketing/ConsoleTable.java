@@ -42,6 +42,7 @@ class ConsoleTable {
         remaining = records.length;
         System.out.println(remaining + " records(s) found:");
         if(remaining == 1) {
+
 		//Start of table
             System.out.println("    --------------------------------------------------"
                     		+ "---------------------------------------------------"

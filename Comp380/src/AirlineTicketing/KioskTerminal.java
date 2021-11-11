@@ -335,7 +335,7 @@ public class KioskTerminal {
 		String[] customerInfo;
 		Data data;
 		int[] openSeats; //0=First; 1=Business; 2=Economy
-        	int[] seatsToReserve;
+    int[] seatsToReserve;
 		int chosenFlight, confirmation, totalOpen;
 		/* initialize dateValues with today's date */
 		Date today = Calendar.getInstance().getTime();
