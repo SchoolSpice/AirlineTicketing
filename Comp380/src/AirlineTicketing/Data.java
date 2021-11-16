@@ -74,6 +74,10 @@ class Data {
             System.out.println("Unable to search database.");
         } //end-try-catch
          try {
+            if(results.isEmpty()) { 
+                System.out.println("No records found.");
+                return 0;
+            } //end-if
             flightNum = ConsoleTable.pick(results);
             if(flightNum > 0) {
                 System.out.println("You selected flight # " + flightNum);
