@@ -72,6 +72,7 @@ class Data {
         } catch (Exception e) {
             System.out.println(e);
             System.out.println("Unable to search database.");
+	    return 0;
         } //end-try-catch
          try {
             if(results.isEmpty()) { 
