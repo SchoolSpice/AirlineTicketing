@@ -44,7 +44,7 @@ class Data {
     int getFlights() {
         int flightNo;
         try {
-            flightNo = ConsoleTable.pick(database.allFlights());
+            flightNo = ConsoleTable.pick(database.allFlights(), 'f');
             if(flightNo > 0) {
                 System.out.println("You selected flight # " + flightNo);
             }
@@ -88,6 +88,9 @@ class Data {
             System.out.println("Flights list unavailable.");
             return 0;
         } //end-try-catch
+        //TODO: do something with results
+        flightNum = ConsoleTable.pick(results, 'f');
+        System.out.println("The flight no. you picked is... " + flightNum);
         return flightNum;
     } //end-search
     
@@ -102,7 +105,7 @@ class Data {
         try {
             results = database.searchConfirmations(idcustomers);
             if(results !=  null) {
-                confirmationNo = ConsoleTable.pick(results);
+                confirmationNo = ConsoleTable.pick(results, 'c');
             } else {
                 throw new Exception("No confirmations found matching email.");
             } //end-if-else
