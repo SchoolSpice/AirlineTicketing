@@ -161,7 +161,7 @@ class ConsoleTable {
         			+ "-----------------------------------");  
             System.out.printf("%5s %2s %29s %30s %18s %3s %30s", " ", 
         		  "FLIGHT #", "DEPARTURE TIME & DATE", "ARRIVAL TIME & DATE", 
-			  "FROM  ->", "TO", "SEATS AVAILABLE");  
+			  "FROM  ->", "TO", "SEATS");  
             System.out.println();  
             System.out.println("    --------------------------------------------------"
 				+ "---------------------------------------------------"
