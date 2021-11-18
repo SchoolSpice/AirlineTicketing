@@ -79,7 +79,7 @@ class Data {
                 System.out.println("No records found.");
                 return 0;
             } //end-if
-            flightNum = ConsoleTable.pick(results);
+            flightNum = ConsoleTable.pick(results, 'f');
             if(flightNum > 0) {
                 System.out.println("You selected flight # " + flightNum);
             }
