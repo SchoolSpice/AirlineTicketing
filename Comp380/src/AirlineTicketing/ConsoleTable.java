@@ -1,4 +1,3 @@
-
 /* Programmer:    Robert Mosier
  * Organization:  CSUN
  * Course:        Comp 380/L
