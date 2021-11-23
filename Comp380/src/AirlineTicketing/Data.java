@@ -35,7 +35,7 @@ class Data {
             temp = DB.getInstance();
         }
         catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             throw new Exception("Unable to get database");
         }
         return new Data(temp);
@@ -49,7 +49,7 @@ class Data {
                 System.out.println("You selected flight # " + flightNo);
             }
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             System.out.println("Flight list unavailable.");
             return 0;
         } //end-try-catch
@@ -63,14 +63,14 @@ class Data {
         try {
             database = DB.getInstance();
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             System.out.println("Unable to connect to database.");
             return 0;
         } //end-try-catch
         try {
             results = database.searchFlights(departure, arrival, mdy);
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             System.out.println("Unable to search database.");
 	    return 0;
         } //end-try-catch
@@ -84,7 +84,7 @@ class Data {
                 System.out.println("You selected flight # " + flightNum);
             }
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             System.out.println("Flights list unavailable.");
             return 0;
         } //end-try-catch
@@ -110,7 +110,7 @@ class Data {
                 throw new Exception("No confirmations found matching email.");
             } //end-if-else
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             throw new Exception("Unable to search \"confirmations\" by \"idcustomer\"");
         } //end-try-catch
         if(confirmationNo > 0)
@@ -160,21 +160,21 @@ class Data {
         try {
             results = database.runQuery(S);
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             System.out.println("SQL query unsuccessful.");
             return;
         }
         try {
             table = ConsoleTable.makeTable(results);
         } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("Unable to retrieve meta data.");
+            //System.out.println(e);
+           ////System.out.println(e);nable to retrieve meta data.");
             return;
         }
         try {
             table.displayTable();
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             System.out.println("Unable to display results.");
         }
         */
