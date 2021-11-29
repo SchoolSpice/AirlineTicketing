@@ -98,7 +98,7 @@ import java.math.BigDecimal;
                  return 0;
              } //end-if-else       
          } catch (Exception e) {
-             System.out.println(e);
+             
              System.out.println("Unable to search CUSTOMERS by EMAIL");
              return -1;
          } //end-try-catch
@@ -175,7 +175,7 @@ import java.math.BigDecimal;
              results.close();
              stmt.close();
          } catch (Exception e) {
-             System.out.println(e);
+             
              System.out.println("Unable to insert customer into database.");
              return 0;
          } //end-try-catch
@@ -198,7 +198,7 @@ import java.math.BigDecimal;
              results.close();
              stmt.close();
          } catch (Exception e) {
-             System.out.println(e);
+             
              System.out.println("Unable to insert \"flightid\" in confirmations.");
              return 0;
          } //end-try-catch
@@ -212,7 +212,7 @@ import java.math.BigDecimal;
              stmt.executeUpdate("INSERT INTO customerconfirmation VALUES ('"
                      + ID_CUST + "', '" + ID_CONF + "')");
          } catch (Exception e) {
-             System.out.println(e);
+             
              System.out.println("Unable to insert new record into \"customerconfirmation\"");
              return false;
          } //end-try-catch
@@ -242,7 +242,7 @@ import java.math.BigDecimal;
                      + CONFIRM_ID + "')");
              stmt.close();
          } catch (Exception e) {
-             System.out.println(e);
+             
              System.out.println("Unable to delete \"confirmationid\" in confirmations.");
              return 0;
          } //end-try-catch
@@ -280,7 +280,13 @@ import java.math.BigDecimal;
      ArrayList<String> allFlights() throws Exception {
          ResultSet results;
          PreparedStatement query =
-                 conn.prepareStatement("SELECT * FROM airlinedb.flights");
+                 conn.prepareStatement("SELECT confirmations.flightid, flights.departtime, " +
+                		 "flights.departdate,flights.arrivaltime,flights.arrivaldate, " +
+                		 "flights.departlocationid,flights.arrivallocationid, " +
+                		 "flights.firstseats-sum(confirmations.firstseats), " +
+                		 "flights.buiseats-sum(confirmations.buiseats)," +
+                		 "flights.econseats-sum(confirmations.econseats) from confirmations, flights "+
+                		 "where flights.idflights = confirmations.flightid group by flightid order by flightid asc");
          results = query.executeQuery();
          return toArrayList(results);
      } //end-allFlights
