@@ -102,7 +102,7 @@ public class KioskTerminal {
             try {
                 data = Data.getInstance();
             } catch (Exception e) {
-                System.out.println(e);
+                //System.out.println(e);
                 System.out.println("Unable to get data.");
                 return -1;
             } // end-try-catch
@@ -110,7 +110,7 @@ public class KioskTerminal {
             try {
                 confirmation = data.getConfirmation(email);
             } catch (Exception e) {
-                System.out.println(e);
+                //System.out.println(e);
                 System.out.println("Returning to menu...");
             } //end-try-catch
             return confirmation;
@@ -124,7 +124,7 @@ public class KioskTerminal {
 		try {
             data = Data.getInstance();
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             System.out.println("Unable to get data.");
             return;
         } // end-try-catch
@@ -148,7 +148,7 @@ public class KioskTerminal {
             try {
                     data = Data.getInstance();
             } catch (Exception e) {
-                    System.out.println(e);
+                    //System.out.println(e);
                     System.out.println("Unable to get data.");
                     return;
             } // end-try-catch
@@ -161,7 +161,7 @@ public class KioskTerminal {
 				openSeats = data.availableSeats(chosenFlight);
 				totalOpen = openSeats[0] + openSeats[1] + openSeats[2];
 			} catch (Exception e) {
-				System.out.println(e);
+				//System.out.println(e);
 				System.out.println("Unable to retrieve seat information.");
 				return;
 			} //end-try-catch
@@ -173,7 +173,8 @@ public class KioskTerminal {
 			try {
 				seatsToReserve = chooseSeats(openSeats);
 			} catch (Exception e) {
-				System.out.println(e);
+				//System.out.println(e);
+				System.out.println ("Transaction Canceled");
 				return;
 			} //end-try-catch
             confirmation = data.makeRes(customerInfo, chosenFlight, seatsToReserve);
@@ -203,7 +204,8 @@ public class KioskTerminal {
 				case 1: try {
 							entry = numOfSeats(remaining[0]);
 						} catch (Exception e) {
-							System.out.println(e);
+							//System.out.println(e);
+							System.out.println("No Seats Availible of the Chosen Type");
 							continue;
 						} //end-try-catch
 						remaining[0] -= entry;
@@ -212,7 +214,8 @@ public class KioskTerminal {
 				case 2:	try {
 							entry = numOfSeats(remaining[1]);
 						} catch (Exception e) {
-							System.out.println(e);
+							//System.out.println(e);
+							System.out.println("No Seats Availible of the Chosen Type");
 							continue;
 						} //end-try-catch
 						remaining[1] -= entry;
@@ -221,7 +224,8 @@ public class KioskTerminal {
 				case 3:	try {
 							entry = numOfSeats(remaining[2]);
 						} catch (Exception e) {
-							System.out.println(e);
+							//System.out.println(e);
+							System.out.println("No Seats Availible of the Chosen Type");
 							continue;
 						} //end-try-catch
 						remaining[2] -= entry;
@@ -311,7 +315,7 @@ public class KioskTerminal {
 	*/
 
 	private static boolean isOnlyLetters(String s) {
-		return s.matches("[ a-zA-Z]+");
+		return s.matches("[ a-zA-Z]+[a-z-']*$");
 	} // end-isOnlyLetters
 
 	private static boolean isValidEmail(String s) {
@@ -344,7 +348,7 @@ public class KioskTerminal {
 		try {
 			data = Data.getInstance();
 		} catch (Exception e) {
-			System.out.println(e);
+			//System.out.println(e);
 			System.out.println("Unable to connect to \"Data\"");
 			input.close();
 			return;
@@ -360,7 +364,7 @@ public class KioskTerminal {
 		try {
 			dateValues = Data.convert(date);
 		} catch (Exception e) {
-			System.out.println(e);
+			//System.out.println(e);
 			System.out.println("Invalid Date: use format MM/DD/YY");
 		}
 		System.out.println("You entered... " + departure + " " + arrival + " " + dateValues[0] + "/" + dateValues[1]
@@ -375,7 +379,7 @@ public class KioskTerminal {
 		    openSeats = data.availableSeats(chosenFlight);
 		    totalOpen = openSeats[0] + openSeats[1] + openSeats[2];
 		} catch (Exception e) {
-		    System.out.println(e);
+		    //System.out.println(e);
 		    System.out.println("Unable to retrieve seat information.");
 		    return;
 		} //end-try-catch
@@ -387,7 +391,8 @@ public class KioskTerminal {
 		try {
 		    seatsToReserve = chooseSeats(openSeats);
 		} catch (Exception e) {
-		    System.out.println(e);
+		    //System.out.println(e);
+			System.out.println("Transaction Successfully cancled");
 		    return;
 		} //end-try-catch
 		confirmation = data.makeRes(customerInfo, chosenFlight, seatsToReserve);
@@ -411,7 +416,7 @@ public class KioskTerminal {
 		try {
 			data = Data.getInstance();
 		} catch (Exception e) {
-			System.out.println(e);
+			//System.out.println(e);
 			System.out.println("Unable to initialize database.");
 			return;
 		}
