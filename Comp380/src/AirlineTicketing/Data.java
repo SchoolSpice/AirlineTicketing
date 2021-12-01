@@ -89,8 +89,6 @@ class Data {
             return 0;
         } //end-try-catch
         //TODO: do something with results
-        flightNum = ConsoleTable.pick(results, 'f');
-        System.out.println("The flight no. you picked is... " + flightNum);
         return flightNum;
     } //end-search
     
@@ -181,7 +179,7 @@ class Data {
     } //end-runSQL
     
     static int[] convert(String s) throws Exception {
-        String[] monthDayYear;
+        String[] monthDayYear = new String[3];
         int[] date = {0, 0, 0};
         try {
             monthDayYear = s.split("/");
@@ -206,9 +204,11 @@ class Data {
             case 4: case 6: case 9: case 11:
                 if(date[1] < 1 || date[1] > 30)
                     throw new Exception("Invalid DATE: day");
+                break;
             case 1: case 3: case 5: case 7: case 8: case 10: case 12:
                 if(date[1] < 1 || date[1] > 31)
                     throw new Exception("Invalid DATE: day");
+                break;
             default:
                 throw new Exception("Invalid DATE: month");
         }
