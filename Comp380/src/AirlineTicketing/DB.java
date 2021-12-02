@@ -253,26 +253,16 @@ import java.math.BigDecimal;
      ArrayList<String> searchConfirmations(final int CUST_ID) throws Exception {
          ResultSet results;
          PreparedStatement query =
-                 conn.prepareStatement("Select confirmations.idconfirmations as " + 
-                         "'Confirmation Number', flights.idflights as " + 
-                         "'Flight Number', flights.departdate as 'Date', " + 
-                         "flights.departtime as 'Time', " + 
-                         "departurelocations.idlocations as 'Departure Location', " + 
-                         "arrivallocations.idlocations as 'Arrival Location', " +
-                         "confirmations.firstseats as 'First Class Seats', " +
-                         "confirmations.buiseats as 'Business Class Seats', " +
-                         "confirmations.econseats as 'Economy Class Seats' " +
-                         "From airlinedb.customers, airlinedb.confirmations, " + 
-                         "airlinedb.locations as departurelocations, " + 
-                         "airlinedb.locations as arrivallocations, " + 
-                         "airlinedb.customerconfirmation, airlinedb.flights " + 
-                         "Where customers.idcustomers=customerconfirmation.customerid " + 
-                         "And customerconfirmation.confirmationid = confirmations.idconfirmations " + 
-                         "And confirmations.flightid = flights.idflights " + 
-                         "And flights.departlocationid = departurelocations.idlocations " + 
-                         "And flights.arrivallocationid = arrivallocations.idlocations " + 
-                         "And customers.idcustomers = '" + 
-                         CUST_ID + "'");
+                 conn.prepareStatement("Select confirmations.idconfirmations, flights.idflights , flights.departdate, "+
+                		"flights.departtime, departurelocations.idlocations, arrivallocations.idlocations, "+
+                		"confirmations.firstseats , confirmations.buiseats, confirmations.econseats From airlinedb.customers,"+
+                		"airlinedb.confirmations, airlinedb.locations ,airlinedb.locations, airlinedb.customerconfirmation, airlinedb.flights \n" + 
+                 		"Where customers.idcustomers=customerconfirmation.customerid \n" + 
+                 		"And customerconfirmation.confirmationid = confirmations.idconfirmations \n" + 
+                 		"And confirmations.flightid = flights.idflights \n" + 
+                 		"And flights.departlocationid = departurelocations.idlocations \n" + 
+                 		"And flights.arrivallocationid = arrivallocations.idlocations\n" + 
+                 		"And customers.idcustomers = '" + CUST_ID + "'");
          results = query.executeQuery();
          return toArrayList(results);
      } //end-searchConfirmations
