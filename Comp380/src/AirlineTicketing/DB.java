@@ -20,12 +20,6 @@
  * data is going to or how it's being used.
  */
 
- // SELECT * FROM airlinedb.flights
- // for SQL:
- // user input == SQL statement
- // SQL output == ResultSet*
- // *from JDBC library
-
  package AirlineTicketing;
 
  import java.sql.Connection;
@@ -218,18 +212,6 @@ import java.math.BigDecimal;
          } //end-try-catch
          return true;        
      } //end-insertCustomerConfirmation
-
-     /*
-     String fetchCity(final String CITY_CODE) throws Exception {
-        String loc = "";
-        PreparedStatement query =  ("SELECT locations.cityname, locations.statename FROM locations WHERE idlocations='"
-                + CITY_CODE + "'");
-        ResultSet results = query.executeQuery();
-        if(results.next()) {
-
-        }
-     }
-     */
      
      boolean deleteConfirmation(final int CONFIRM_ID) {
          Statement stmt;

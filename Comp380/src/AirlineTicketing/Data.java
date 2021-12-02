@@ -145,38 +145,6 @@ class Data {
     	return database.deleteConfirmation(CONFIRMATION_ID);
     }
     
-    /*
-    boolean checkRes(final int CONFIRMATION_ID) {
-    	database.searchConfirmations(CONFIRMATION_ID);
-    }
-    */
-    void runSQL(final String S) {
-        /*
-        ResultSet results;
-        ConsoleTable table;
-        try {
-            results = database.runQuery(S);
-        } catch (Exception e) {
-            //System.out.println(e);
-            System.out.println("SQL query unsuccessful.");
-            return;
-        }
-        try {
-            table = ConsoleTable.makeTable(results);
-        } catch (Exception e) {
-            //System.out.println(e);
-           ////System.out.println(e);nable to retrieve meta data.");
-            return;
-        }
-        try {
-            table.displayTable();
-        } catch (Exception e) {
-            //System.out.println(e);
-            System.out.println("Unable to display results.");
-        }
-        */
-    } //end-runSQL
-    
     static int[] convert(String s) throws Exception {
         String[] monthDayYear = new String[3];
         int[] date = {0, 0, 0};
