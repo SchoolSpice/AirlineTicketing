@@ -44,7 +44,6 @@ public class KioskTerminal {
 	private static final String[] OPTIONS_SM1 = { "View All Flights", "Search Flights by Arrival/Destination" };
 	private static final String OPTION_ZERO_SM1 = "Return to Main Menu";
 
-
 	/***** SUB MENU 2 *****/
 	private static final String TITLE_SM2 = "Choose your section";
 	private static final String[] OPTIONS_SM2 = { "First Class", "Business Class", "Economy Class" };
@@ -59,6 +58,11 @@ public class KioskTerminal {
 	private static final String TITLE_SM4 = "Book a reservation?";
 	private static final String[] OPTIONS_SM4 = { "Yes" };
 	private static final String OPTION_ZERO_SM4 = "No";
+
+	/***** SUB MENU 5  *****/
+	private static final String TITLE_SM5 = "Cancel reservation?";
+	private static final String[] OPTIONS_SM5 = { "Yes" };
+	private static final String OPTION_ZERO_SM5 = "No";
 
 	public static void main(String args[]) throws IOException, InterruptedException {
 		// new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -312,14 +316,6 @@ public class KioskTerminal {
 		} // end-loop
 		return new String[] { first, last, email };
 	} // end-enterInfo
-
-	/*
-	private static int[] chooseSeats(final int FLIGHT_ID) throws Exception {
-		int firstSeats, busSeats, econSeats;
-		System.out.printf("Would you like to reserve seats on Flight #%d (Y/N)?: ", FLIGHT_ID);
-
-	}
-	*/
 
 	private static boolean isOnlyLetters(String s) {
 		return s.matches("[ a-zA-Z]+[a-z-']*$");
