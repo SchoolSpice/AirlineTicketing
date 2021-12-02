@@ -339,11 +339,11 @@ public class KioskTerminal {
 		String[] customerInfo;
 		Data data;
 		int[] openSeats; //0=First; 1=Business; 2=Economy
-    int[] seatsToReserve;
+    	int[] seatsToReserve;
 		int chosenFlight, confirmation, totalOpen;
 		/* initialize dateValues with today's date */
 		Date today = Calendar.getInstance().getTime();
-		int[] dateValues = { today.getYear(), today.getMonth(), today.getDay() };
+		int[] dateValues = {0, 0, 0};
 		/* Try to access the data */
 		try {
 			data = Data.getInstance();
@@ -359,17 +359,16 @@ public class KioskTerminal {
 		System.out.print("Enter your departure airport: ");
 		departure = input.nextLine();
 		System.out.print("Enter your preferred departure date (MM/DD/YY): ");
-		date = input.nextLine();
+		date = input.nextLine().trim();
 		/* Changes the date from String to integers */
 		try {
 			dateValues = Data.convert(date);
 		} catch (Exception e) {
-			//System.out.println(e);
-			System.out.println("Invalid Date: use format MM/DD/YY");
-		}
-		System.out.println("You entered... " + departure + " " + arrival + " " + dateValues[0] + "/" + dateValues[1]
-				+ "/" + dateValues[2]);
 
+			System.out.println(e.toString().substring(21));
+			System.out.println("You entered... " + departure + " " + arrival + " " + date);
+
+		}
 		chosenFlight = data.search(departure, arrival, dateValues);
 		if (chosenFlight <= 0) {
 		    System.out.println("No flight selected.");
@@ -392,7 +391,9 @@ public class KioskTerminal {
 		    seatsToReserve = chooseSeats(openSeats);
 		} catch (Exception e) {
 		    //System.out.println(e);
-			System.out.println("Transaction Successfully cancled");
+
+			System.out.println("Transaction Successfully canceled");
+
 		    return;
 		} //end-try-catch
 		confirmation = data.makeRes(customerInfo, chosenFlight, seatsToReserve);
