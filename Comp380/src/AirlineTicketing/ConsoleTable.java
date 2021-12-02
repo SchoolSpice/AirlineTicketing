@@ -1,3 +1,4 @@
+
 /* Programmer:    Robert Mosier
  * Organization:  CSUN
  * Course:        Comp 380/L
@@ -21,15 +22,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
  
 class ConsoleTable {
-    static final int LINE_WIDTH = 36;
-    // ResultSet data;
-    // ResultSetMetaData meta;
-    // private int num_of_columns;
-    // private int num_of_results;
-    // private String[] columnNames;
-    // private int[] columnWidths;
-	
-    static int pick(ArrayList<String> list) {
+    static final int FLIGHT_TABLE_WIDTH = 92;
+    static final int LINE_WIDTH = 30;
+    static final int CONF_TABLE_WIDTH = 46;
+   	
+    static int pick(ArrayList<String> list, final char FLAG) {
+        /* FLAG:
+            Flights header = f
+            Confirmations header = c
+        */
         Object[] records = {"No records found."};
         int selection = 0;
         int remaining;
@@ -42,57 +43,24 @@ class ConsoleTable {
         remaining = records.length;
         System.out.println(remaining + " records(s) found:");
         if(remaining == 1) {
-
 		//Start of table
-            System.out.println("    --------------------------------------------------"
-                    		+ "---------------------------------------------------"
-                    		+ "-----------------------------------");  
-            System.out.printf("%5s %2s %29s %30s %18s %3s %30s", " ", 
-                  		"FLIGHT #", "DEPARTURE TIME & DATE", "ARRIVAL TIME & DATE", 
-              			"FROM  ->", "TO", "SEATS AVAILABLE");  
-            System.out.println();  
-            System.out.println("    --------------------------------------------------"
-                		+ "---------------------------------------------------"
-                    		+ "-----------------------------------");  
-		//Splits a record (row) into field elements 
-            String[] singleRecord = ((String) records[0]).split(";");
-		//.format uses %(num)s to mean character spaces - pads the elements to format table
-            System.out.format("%5s %4s %20s %10s %20s %10s %12s %8s %20s %10s %10s", " ", singleRecord[0], 
-                    		singleRecord[1], singleRecord[2], singleRecord[3], singleRecord[4], 
-                   		 singleRecord[5], singleRecord[6], "First:" + singleRecord[7], 
-                            	"Bus:" + singleRecord[8], "Econ:" + singleRecord[9]);
-            System.out.println();
+            printHeader(FLAG);  
+            printRecord((String) records[0], FLAG);
 		//end of table format
             return getFirstField(records[0]);
         } //end-if
-        Menu.printDashedLine(LINE_WIDTH);
-	//Start of table
-	System.out.println("    --------------------------------------------------"
-        			+ "---------------------------------------------------"
-        			+ "-----------------------------------");  
-        System.out.printf("%5s %2s %29s %30s %18s %3s %30s", " ", 
-        		  "FLIGHT #", "DEPARTURE TIME & DATE", "ARRIVAL TIME & DATE", 
-			  "FROM  ->", "TO", "SEATS AVAILABLE");  
-        System.out.println();  
-        System.out.println("    --------------------------------------------------"
-				+ "---------------------------------------------------"
-        			+ "-----------------------------------");   
+        boolean includeHeader = true;
         while(remaining > 0) {
+            if(includeHeader) {
+                printHeader(FLAG);
+                includeHeader = false;
+            } //end-if
             System.out.print("(" + (count % 9 + 1) + ") ");
-	    //Splits a record (row) into field elements 
-            String[] splitRecord = ((String) records[count]).split(";"); 
-	    //.format uses %(num)s to mean character spaces - pads the elements to format table
-            System.out.format("|%5s %20s %10s %20s %10s %12s %8s %20s %10s %10s", splitRecord[0], 
-			      splitRecord[1], splitRecord[2], splitRecord[3], splitRecord[4], 
-			      splitRecord[5], splitRecord[6], "First:" + splitRecord[7], 
-            		      "Bus:" + splitRecord[8], "Econ:" + splitRecord[9]);
-            System.out.println("");
-            System.out.println("    |");
-	    //end of table format
-
-            count++;
+            printRecord((String) records[count], FLAG);
+	        count++;
             remaining--;
             if((count % 9 == 0) || (remaining == 0)) {
+                includeHeader = true;
                 selection = enterSelection();
                 int realIndex;
                 if(count % 9 == 0)
@@ -106,14 +74,85 @@ class ConsoleTable {
                     case 5: case 6: case 7: case 8:
                     case 9: return getFirstField(records[realIndex]);
                 } //end-switch
+                if(remaining > 0)
+                    System.out.println("Next page...");
             } //end-if
         } //end-loop
         return selection;
     } //end-pick
 
-    /*
-    private String format(Object o) {}
-    */
+    private static void printRecord(final String RECORD, final char FLAG) {
+        if (FLAG == 'f')
+            printFlightRecord(RECORD);
+        if(FLAG == 'c')
+            printConfirmationRecord(RECORD);
+    } //end-printRecord
+
+    private static void printFlightRecord(final String R) {
+        String[] fields = R.split(";");
+        fields[0] = "#" + fields[0];
+        fields[1] = formatTime(fields[1]);
+        fields[3] = formatTime(fields[3]);
+        System.out.format("|%5.5s%7s %s%s  >>> %s %s%s   %-10s %-8s %-9s%n", fields[0], 
+			      fields[5], fields[2], fields[1], fields[6], fields[4], fields[3], 
+			      "First:" + fields[7], 
+            		      "Bus:" + fields[8], "Econ:" + fields[9]);
+    } //end-printFlightRecord
+
+    private static void printConfirmationRecord(final String R) {
+        String[] fields = R.split(";");
+        fields[3] = formatTime(fields[3]);
+        if(fields[6].equals(" 0"))
+            fields[6] = "";
+        else
+            fields[6] = fields[6] + " First Class";
+        if(fields[7].equals(" 0"))
+            fields[7] = "";
+        else
+            fields[7] = fields[7] + " Business Class";
+        if(fields[8].equals(" 0"))
+            fields[8] = "";
+        else
+            fields[8] = fields[8] + " Economy Class";
+        System.out.format(" #%-5sFlight:%-3s    From%s to%s    Departing%s%s    Seats:%s%s%s%n", fields[0], 
+			      fields[1], fields[4], fields[5], fields[2], 
+			      fields[3], fields[6], fields[7], 
+            		      fields[8]);
+    } //end-printConfirmationRecord
+
+    private static void printHeader(final char FLAG) {
+        if(FLAG == 'f')
+            printHeaderForFlights();
+        if(FLAG == 'c')
+            printHeaderForConfirmations();
+    } //end-printHeader
+
+    private static void printHeaderForFlights() {
+        System.out.format("%n    ");
+        Menu.printDashedLine(FLIGHT_TABLE_WIDTH);
+        System.out.format("%12s %15s %26s %33s%n", "FLIGHT",
+                "DEPARTURE", "ARRIVAL", "AVAILABLE SEATS");
+        System.out.print("    ");
+        Menu.printDashedLine(FLIGHT_TABLE_WIDTH);
+    } //end-printHeaderForFlights
+
+    private static void printHeaderForConfirmations() {
+        System.out.format("%n    ");
+        Menu.printDashedLine(CONF_TABLE_WIDTH);
+        System.out.format("%48s%n", "Ticket Reservations by Confirmation Number");
+        System.out.print("    ");
+        Menu.printDashedLine(CONF_TABLE_WIDTH);
+    } //end-printHeaderForConfirmations
+
+    private static String formatTime(String time) {
+        time = time.substring(0, 6);
+        int hour = Integer.parseInt(time.substring(1, 3));
+        if (hour < 12)
+            time += "a";
+        else
+            time += "p";
+        return time;
+    }
     
     private static int getFirstField(Object o) {
         int flightNo = 0;
@@ -133,9 +172,9 @@ class ConsoleTable {
     private static int enterSelection() {
         Scanner input = new Scanner(System.in);
         int selection = -1;
-        Menu.printDashedLine(LINE_WIDTH);
-        System.out.println("Choose flight 1 thru 9 (or 0 to Exit)");
-        System.out.print("Press ENTER for more flights: ");
+        System.out.format("%n");
+        System.out.println("Choose 1 thru 9 (or 0 to Exit)");
+        System.out.print("Press ENTER for more records: ");
         String rawInput = input.nextLine();
         try {
             selection = Integer.parseInt(rawInput);
@@ -143,6 +182,7 @@ class ConsoleTable {
                 throw new Exception("integer out of bounds");
             } //end-if
         } catch (Exception e) {
+
             System.out.println("Next page...");
             Menu.printDashedLine(LINE_WIDTH);
 
@@ -151,108 +191,18 @@ class ConsoleTable {
         			+ "-----------------------------------");  
             System.out.printf("%5s %2s %29s %30s %18s %3s %30s", " ", 
         		  "FLIGHT #", "DEPARTURE TIME & DATE", "ARRIVAL TIME & DATE", 
-			  "FROM  ->", "TO", "SEATS AVAILABLE");  
+			  "FROM  ->", "TO", "SEATS");  
             System.out.println();  
             System.out.println("    --------------------------------------------------"
 				+ "---------------------------------------------------"
         			+ "-----------------------------------"); 		
+
 
             return -1;
         } finally {
             return selection;
         } //end-try-catch-finally
     } //end-enterSelection
-    
-    /*
-    private ConsoleTable(ResultSet r, ResultSetMetaData m_d) {
-        super();
-        data = r;
-	meta = m_d;
-    } //end-ConsoleTable
-    */
-    
-    /*
-    static ConsoleTable makeTable(ResultSet r) throws Exception {
-        ResultSetMetaData m_d = r.getMetaData();
-        ConsoleTable newTable = new ConsoleTable(r, m_d);
-        newTable.num_of_columns = m_d.getColumnCount();
-        System.out.println("Number of columns: " + newTable.num_of_columns);
-        // newTable.num_of_results = newTable.data.getFetchSize();
-        newTable.columnNames = new String[newTable.num_of_columns];
-        System.out.println(newTable.columnNames.toString());
-        newTable.columnWidths = new int[newTable.num_of_columns];
-        System.out.println(newTable.columnWidths.toString());
-        newTable.fillColumnLabels();
-        newTable.fillColumnWidths();
-        return newTable;
-    } //end-makeTable
-    */
 
-    /*
-    static void displayTable(ResultSet results) throws Exception {
-        Scanner input = new Scanner(System.in);
-        ResultSetMetaData m_d = r.getMetaData();
-        int count = 0;
-        boolean header = true;
-        data.beforeFirst();
-        while(data.next()) {
-            if(header) {
-                printColumnLabels();
-                header = false;
-            }
-            for (int i = 0; i < num_of_columns; i++) {
-                String cell = data.getString(i);
-                final int DIFF = columnWidths[i] - cell.length();
-                System.out.print(cell + space(DIFF));
-            }
-            System.out.println();
-            if(count % 15 == 0) {
-                header = true;
-                pause();
-            }
-            count++;
-        }
-    } //end-displayTable
-    
-    private void printColumnLabels() {
-        int diff;
-        for (int i = 0; i < num_of_columns; i++) {
-            diff = columnWidths[i] - columnNames[i].length();
-            System.out.print(columnNames[i]);
-            System.out.print(space(diff));
-        } //end-loop
-        System.out.println();
-    } //end-printColumnLabels
-    
-    private String space(final int SIZE) {
-        String gap = "";
-        for (int i = SIZE; i > 0; i--)
-            gap += " ";
-        return gap;
-    } //end-space
-    
-    private void fillColumnLabels() throws Exception {
-        for (int i = 0; i < num_of_columns; i++) {
-            try {
-                columnNames[i] = meta.getColumnLabel(i);
-            } catch (Exception e) {
-                columnNames[i] = meta.getColumnName(i);
-            }
-        } //end-loop
-    } //end-getColumnLabels
-    
-    private void fillColumnWidths() throws Exception {
-        for (int i = 0; i < num_of_columns; i++) 
-            columnWidths[i] = meta.getColumnDisplaySize(i);
-    } //end-getColumnWidth
-    
-    private void pause() {
-        System.out.println("Press Enter to continue...");
-        try {
-            System.in.read();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    } //end-pause
-    */
-} //end-class:Table
+} //end-ConsoleTable
+

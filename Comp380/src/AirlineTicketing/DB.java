@@ -98,7 +98,7 @@ import java.math.BigDecimal;
                  return 0;
              } //end-if-else       
          } catch (Exception e) {
-             System.out.println(e);
+             
              System.out.println("Unable to search CUSTOMERS by EMAIL");
              return -1;
          } //end-try-catch
@@ -175,7 +175,7 @@ import java.math.BigDecimal;
              results.close();
              stmt.close();
          } catch (Exception e) {
-             System.out.println(e);
+             
              System.out.println("Unable to insert customer into database.");
              return 0;
          } //end-try-catch
@@ -198,7 +198,7 @@ import java.math.BigDecimal;
              results.close();
              stmt.close();
          } catch (Exception e) {
-             System.out.println(e);
+             
              System.out.println("Unable to insert \"flightid\" in confirmations.");
              return 0;
          } //end-try-catch
@@ -212,7 +212,7 @@ import java.math.BigDecimal;
              stmt.executeUpdate("INSERT INTO customerconfirmation VALUES ('"
                      + ID_CUST + "', '" + ID_CONF + "')");
          } catch (Exception e) {
-             System.out.println(e);
+             
              System.out.println("Unable to insert new record into \"customerconfirmation\"");
              return false;
          } //end-try-catch
@@ -242,7 +242,7 @@ import java.math.BigDecimal;
                      + CONFIRM_ID + "')");
              stmt.close();
          } catch (Exception e) {
-             System.out.println(e);
+             
              System.out.println("Unable to delete \"confirmationid\" in confirmations.");
              return 0;
          } //end-try-catch
@@ -258,7 +258,10 @@ import java.math.BigDecimal;
                          "'Flight Number', flights.departdate as 'Date', " + 
                          "flights.departtime as 'Time', " + 
                          "departurelocations.idlocations as 'Departure Location', " + 
-                         "arrivallocations.idlocations as 'Arrival Location' " + 
+                         "arrivallocations.idlocations as 'Arrival Location', " +
+                         "confirmations.firstseats as 'First Class Seats', " +
+                         "confirmations.buiseats as 'Business Class Seats', " +
+                         "confirmations.econseats as 'Economy Class Seats' " +
                          "From airlinedb.customers, airlinedb.confirmations, " + 
                          "airlinedb.locations as departurelocations, " + 
                          "airlinedb.locations as arrivallocations, " + 
@@ -274,12 +277,14 @@ import java.math.BigDecimal;
          return toArrayList(results);
      } //end-searchConfirmations
      
- 
-        
      ArrayList<String> allFlights() throws Exception {
          ResultSet results;
          PreparedStatement query =
-                 conn.prepareStatement("SELECT * FROM airlinedb.flights");
+                 conn.prepareStatement("SELECT flights.idflights, flights.departtime, flights.departdate,flights.arrivaltime,flights.arrivaldate, \n" + 
+                 		"flights.departlocationid,flights.arrivallocationid, \n" + 
+                 		"ifnull(flights.firstseats-sum(confirmations.firstseats),20),ifnull(flights.buiseats-sum(confirmations.buiseats),20),\n" + 
+                 		"ifnull(flights.econseats-sum(confirmations.econseats),60) from flights left join confirmations \n" + 
+                 		"on flights.idflights = confirmations.flightid group by idflights");
          results = query.executeQuery();
          return toArrayList(results);
      } //end-allFlights
@@ -303,22 +308,6 @@ import java.math.BigDecimal;
              for(int i = 1; i <= columnCount; i++){
                  flightInfo += r.getString(i) + DELIMITER;
              } //end-loop
-             /*
-             String flightInfo =
-                     r.getString("idflights") +
-                     DELIMITER +
-                     r.getString("departlocationid") +
-                     DELIMITER +
-                     r.getString("departtime") +
-                     DELIMITER +
-                     r.getString("departdate") +
-                     DELIMITER +
-                     r.getString("arrivallocationid") +
-                     DELIMITER +
-                     r.getString("arrivaltime") +
-                     DELIMITER +
-                     r.getString("arrivaldate");
-             */
              list.add(flightInfo);
          } //end-while
          return list;

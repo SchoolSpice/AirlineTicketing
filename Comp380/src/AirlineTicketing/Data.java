@@ -35,7 +35,7 @@ class Data {
             temp = DB.getInstance();
         }
         catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             throw new Exception("Unable to get database");
         }
         return new Data(temp);
@@ -44,12 +44,12 @@ class Data {
     int getFlights() {
         int flightNo;
         try {
-            flightNo = ConsoleTable.pick(database.allFlights());
+            flightNo = ConsoleTable.pick(database.allFlights(), 'f');
             if(flightNo > 0) {
                 System.out.println("You selected flight # " + flightNo);
             }
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             System.out.println("Flight list unavailable.");
             return 0;
         } //end-try-catch
@@ -63,14 +63,14 @@ class Data {
         try {
             database = DB.getInstance();
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             System.out.println("Unable to connect to database.");
             return 0;
         } //end-try-catch
         try {
             results = database.searchFlights(departure, arrival, mdy);
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             System.out.println("Unable to search database.");
 	    return 0;
         } //end-try-catch
@@ -79,15 +79,16 @@ class Data {
                 System.out.println("No records found.");
                 return 0;
             } //end-if
-            flightNum = ConsoleTable.pick(results);
+            flightNum = ConsoleTable.pick(results, 'f');
             if(flightNum > 0) {
                 System.out.println("You selected flight # " + flightNum);
             }
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             System.out.println("Flights list unavailable.");
             return 0;
         } //end-try-catch
+        //TODO: do something with results
         return flightNum;
     } //end-search
     
@@ -102,12 +103,12 @@ class Data {
         try {
             results = database.searchConfirmations(idcustomers);
             if(results !=  null) {
-                confirmationNo = ConsoleTable.pick(results);
+                confirmationNo = ConsoleTable.pick(results, 'c');
             } else {
                 throw new Exception("No confirmations found matching email.");
             } //end-if-else
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             throw new Exception("Unable to search \"confirmations\" by \"idcustomer\"");
         } //end-try-catch
         if(confirmationNo > 0)
@@ -157,28 +158,28 @@ class Data {
         try {
             results = database.runQuery(S);
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             System.out.println("SQL query unsuccessful.");
             return;
         }
         try {
             table = ConsoleTable.makeTable(results);
         } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("Unable to retrieve meta data.");
+            //System.out.println(e);
+           ////System.out.println(e);nable to retrieve meta data.");
             return;
         }
         try {
             table.displayTable();
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             System.out.println("Unable to display results.");
         }
         */
     } //end-runSQL
     
     static int[] convert(String s) throws Exception {
-        String[] monthDayYear;
+        String[] monthDayYear = new String[3];
         int[] date = {0, 0, 0};
         try {
             monthDayYear = s.split("/");
@@ -193,6 +194,24 @@ class Data {
         date[1] = Integer.parseInt(monthDayYear[1]);
         date[2] = Integer.parseInt(monthDayYear[2]);
         if(date[2] < 100) {date[2] += 2000;} // convert YY to YYYY
+        if(date[2] < 2000 || date[2] > 2100)
+            throw new Exception("Invalid DATE: year");
+        switch(date[0]) {
+            case 2:
+                if (date[1] < 1 || date[1] > 29)
+                    throw new Exception("Invalid DATE: day");
+                break;
+            case 4: case 6: case 9: case 11:
+                if(date[1] < 1 || date[1] > 30)
+                    throw new Exception("Invalid DATE: day");
+                break;
+            case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+                if(date[1] < 1 || date[1] > 31)
+                    throw new Exception("Invalid DATE: day");
+                break;
+            default:
+                throw new Exception("Invalid DATE: month");
+        }
         return date;
     } //end-convert
 } //end-Class:Data
