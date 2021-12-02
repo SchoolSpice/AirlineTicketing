@@ -55,6 +55,11 @@ public class KioskTerminal {
 	private static final String[] OPTIONS_SM3 = { "Yes" };
 	private static final String OPTION_ZERO_SM3 = "No";
 
+	/***** SUB MENU 4  *****/
+	private static final String TITLE_SM4 = "Book a reservation?";
+	private static final String[] OPTIONS_SM4 = { "Yes" };
+	private static final String OPTION_ZERO_SM4 = "No";
+
 	public static void main(String args[]) throws IOException, InterruptedException {
 		// new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
 		Menu mainMenu = new Menu(TITLE_MM, OPTIONS_MM, OPTION_ZERO_MM);
@@ -139,7 +144,7 @@ public class KioskTerminal {
 	} // end-cancelRes
 
 	private static void viewAllFlights() {
-
+			Menu subMenu4 = new Menu(TITLE_SM4, OPTIONS_SM4, OPTION_ZERO_SM4);
             Data data;
             String[] customerInfo;
             int chosenFlight, confirmation, totalOpen;
@@ -169,6 +174,8 @@ public class KioskTerminal {
 				System.out.println("No seats available -- Select another flight.");
 				return;
 			}
+			if(subMenu4.makeSelection() == 0)
+				return;
             customerInfo = enterInfo();
 			try {
 				seatsToReserve = chooseSeats(openSeats);
@@ -335,6 +342,7 @@ public class KioskTerminal {
 	private static void searchFlightsByLoc() {
 		/* Variables */
 		Scanner input = new Scanner(System.in);
+		Menu subMenu4 = new Menu(TITLE_SM4, OPTIONS_SM4, OPTION_ZERO_SM4);
 		String departure, arrival, date;
 		String[] customerInfo;
 		Data data;
@@ -386,6 +394,8 @@ public class KioskTerminal {
 		    System.out.println("No seats available -- Select another flight.");
 		    return;
 		}
+		if(subMenu4.makeSelection() == 0)
+			return;
 		customerInfo = enterInfo();
 		try {
 		    seatsToReserve = chooseSeats(openSeats);
