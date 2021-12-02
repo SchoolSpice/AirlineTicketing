@@ -141,9 +141,8 @@ class Data {
         return available;
     } //end-availableSeats
 
-    void cancelreservation(int CONFIRMATION_ID) {
-    	
-    	database.deleteConfirmation(CONFIRMATION_ID);
+    boolean cancelreservation(final int CONFIRMATION_ID) {
+    	return database.deleteConfirmation(CONFIRMATION_ID);
     }
     
     /*

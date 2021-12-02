@@ -127,24 +127,24 @@ public class KioskTerminal {
 	} // end-viewRes
 
 	private static void cancelRes() {
+		Menu subMenu5 = new Menu(TITLE_SM5, OPTIONS_SM5, OPTION_ZERO_SM5);
 		Data data;
 		int confirmationId;
-		
+		char answer;
+		Scanner input = new Scanner(System.in);
 		try {
-            data = Data.getInstance();
-        } catch (Exception e) {
-            //System.out.println(e);
-            System.out.println("Unable to get data.");
-            return;
-        } // end-try-catch
-		
+			data = Data.getInstance();
+		} catch (Exception e) {
+			System.out.println("Unable to get data.");
+			return;
+		} // end-try-catch
 		confirmationId = viewRes();
-
-		System.out.println("Processing....");
-		data.cancelreservation(confirmationId);
-		
-		System.out.println("Reservation canceled successfully");
-		
+		if(subMenu5.makeSelection() == 0) {return;}
+		if(data.cancelreservation(confirmationId)) {
+			System.out.println("Reservation canceled successfully.");
+		} else {
+			System.out.println("Unable to cancel reservation.");
+		}
 	} // end-cancelRes
 
 	private static void viewAllFlights() {

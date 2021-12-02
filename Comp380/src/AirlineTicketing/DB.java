@@ -231,9 +231,8 @@ import java.math.BigDecimal;
      }
      */
      
-     int deleteConfirmation(final int CONFIRM_ID) {
+     boolean deleteConfirmation(final int CONFIRM_ID) {
          Statement stmt;
-         
          try {
              stmt = conn.createStatement();    
              stmt.executeUpdate("DELETE from airlinedb.customerconfirmation where confirmationid = ('"
@@ -242,12 +241,10 @@ import java.math.BigDecimal;
                      + CONFIRM_ID + "')");
              stmt.close();
          } catch (Exception e) {
-             
-             System.out.println("Unable to delete \"confirmationid\" in confirmations.");
-             return 0;
+            System.out.println("Unable to delete \"confirmationid\" in confirmations.");
+             return false;
          } //end-try-catch
-         
-         return 0;
+         return true;
      } //end-deleteConfirmation
      
      ArrayList<String> searchConfirmations(final int CUST_ID) throws Exception {
