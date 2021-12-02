@@ -315,7 +315,7 @@ public class KioskTerminal {
 	*/
 
 	private static boolean isOnlyLetters(String s) {
-		return s.matches("[ a-zA-Z]+");
+		return s.matches("[ a-zA-Z]+[a-z-']*$");
 	} // end-isOnlyLetters
 
 	private static boolean isValidEmail(String s) {
@@ -364,8 +364,10 @@ public class KioskTerminal {
 		try {
 			dateValues = Data.convert(date);
 		} catch (Exception e) {
+
 			System.out.println(e.toString().substring(21));
 			System.out.println("You entered... " + departure + " " + arrival + " " + date);
+
 		}
 		chosenFlight = data.search(departure, arrival, dateValues);
 		if (chosenFlight <= 0) {
@@ -389,7 +391,9 @@ public class KioskTerminal {
 		    seatsToReserve = chooseSeats(openSeats);
 		} catch (Exception e) {
 		    //System.out.println(e);
+
 			System.out.println("Transaction Successfully canceled");
+
 		    return;
 		} //end-try-catch
 		confirmation = data.makeRes(customerInfo, chosenFlight, seatsToReserve);

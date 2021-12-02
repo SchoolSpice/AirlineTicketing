@@ -1,3 +1,4 @@
+
 /* Programmer:    Robert Mosier
  * Organization:  CSUN
  * Course:        Comp 380/L
@@ -181,9 +182,27 @@ class ConsoleTable {
                 throw new Exception("integer out of bounds");
             } //end-if
         } catch (Exception e) {
+
+            System.out.println("Next page...");
+            Menu.printDashedLine(LINE_WIDTH);
+
+	    System.out.println("    --------------------------------------------------"
+        			+ "---------------------------------------------------"
+        			+ "-----------------------------------");  
+            System.out.printf("%5s %2s %29s %30s %18s %3s %30s", " ", 
+        		  "FLIGHT #", "DEPARTURE TIME & DATE", "ARRIVAL TIME & DATE", 
+			  "FROM  ->", "TO", "SEATS");  
+            System.out.println();  
+            System.out.println("    --------------------------------------------------"
+				+ "---------------------------------------------------"
+        			+ "-----------------------------------"); 		
+
+
             return -1;
         } finally {
             return selection;
         } //end-try-catch-finally
     } //end-enterSelection
+
 } //end-ConsoleTable
+
