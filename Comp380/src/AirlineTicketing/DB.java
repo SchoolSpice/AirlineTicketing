@@ -310,22 +310,6 @@ import java.math.BigDecimal;
              for(int i = 1; i <= columnCount; i++){
                  flightInfo += r.getString(i) + DELIMITER;
              } //end-loop
-             /*
-             String flightInfo =
-                     r.getString("idflights") +
-                     DELIMITER +
-                     r.getString("departlocationid") +
-                     DELIMITER +
-                     r.getString("departtime") +
-                     DELIMITER +
-                     r.getString("departdate") +
-                     DELIMITER +
-                     r.getString("arrivallocationid") +
-                     DELIMITER +
-                     r.getString("arrivaltime") +
-                     DELIMITER +
-                     r.getString("arrivaldate");
-             */
              list.add(flightInfo);
          } //end-while
          return list;
