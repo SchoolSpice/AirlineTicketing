@@ -145,7 +145,7 @@ class Data {
     	
     	database.deleteConfirmation(CONFIRMATION_ID);
     }
-    
+       
     static int[] convert(String s) throws Exception {
         String[] monthDayYear = new String[3];
         int[] date = {0, 0, 0};

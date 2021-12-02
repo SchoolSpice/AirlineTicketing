@@ -76,9 +76,6 @@ public class KioskTerminal {
 			case 3:
 				cancelRes();
 				break;
-			case 4:
-				enterSQL();
-				break;
 			} // end-switch
 		} // end-loop
 	} // end-main
@@ -313,14 +310,6 @@ public class KioskTerminal {
 		return new String[] { first, last, email };
 	} // end-enterInfo
 
-	/*
-	private static int[] chooseSeats(final int FLIGHT_ID) throws Exception {
-		int firstSeats, busSeats, econSeats;
-		System.out.printf("Would you like to reserve seats on Flight #%d (Y/N)?: ", FLIGHT_ID);
-
-	}
-	*/
-
 	private static boolean isOnlyLetters(String s) {
 		return s.matches("[ a-zA-Z]+[a-z-']*$");
 	} // end-isOnlyLetters
@@ -416,24 +405,6 @@ public class KioskTerminal {
 			System.out.println("Confirmation #: " + confirmation);
 		} //end-if-else
 	} // end-searchFlightsByLoc
-
-	private static void enterSQL() {
-		Scanner input = new Scanner(System.in);
-		String query;
-		Data data;
-		System.out.println("WARNING: Not yet working!");
-		System.out.print("\nEnter SQL: ");
-		query = input.nextLine();
-		try {
-			data = Data.getInstance();
-		} catch (Exception e) {
-			//System.out.println(e);
-			System.out.println("Unable to initialize database.");
-			return;
-		}
-		data.runSQL(query);
-		input.close();
-	} // end-enterSQL
 
 	private static void exitKiosk() {
 		System.out.println("\nGoodbye...");
