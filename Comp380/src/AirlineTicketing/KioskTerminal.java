@@ -125,21 +125,28 @@ public class KioskTerminal {
 	private static void cancelRes() {
 		Data data;
 		int confirmationId;
+		char answer;
+		Scanner input = new Scanner(System.in);
 		
 		try {
-            data = Data.getInstance();
-        } catch (Exception e) {
-            //System.out.println(e);
-            System.out.println("Unable to get data.");
-            return;
-        } // end-try-catch
+            		data = Data.getInstance();
+       		} catch (Exception e) {
+            		System.out.println("Unable to get data.");
+            		return;
+        	} // end-try-catch
 		
 		confirmationId = viewRes();
 
-		System.out.println("Processing....");
-		data.cancelreservation(confirmationId);
+		System.out.println("Do you want to cancel this reservation?");
+		answer = input.next().charAt(0);
 		
-		System.out.println("Reservation canceled successfully");
+		if(answer == 'Y' || answer == 'y'){
+			System.out.println("Processing...");
+			data.cancelreservation(confirmationId);
+			System.out.println("Reservation canceled successfully");
+		} else {
+		  	System.out.println("Go back to main menu");
+		}
 		
 	} // end-cancelRes
 
