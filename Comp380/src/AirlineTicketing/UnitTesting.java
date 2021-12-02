@@ -78,7 +78,7 @@ public class UnitTesting {
       
       exception = assertThrows(Exception.class, () -> Data.convert("4868343927"));
       System.out.println("Date Throws Invalid Year Exception For Random Numbers = ...");
-      assertEquals("Date Throws Invalid Year Exception For Random Numbers = Fail", "Invalid DATE: year",exception.getMessage());
+      assertEquals("Date Throws Invalid Year Exception For Random Numbers = Fail", "Invalid DATE: year",exception.getMessage()); //Can pass if expecting "For input string: \"4868343927\""
       System.out.println("  --Passed!");
       
   }
