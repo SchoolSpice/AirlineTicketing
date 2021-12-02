@@ -280,13 +280,11 @@ import java.math.BigDecimal;
      ArrayList<String> allFlights() throws Exception {
          ResultSet results;
          PreparedStatement query =
-                 conn.prepareStatement("SELECT confirmations.flightid, flights.departtime, " +
-                		 "flights.departdate,flights.arrivaltime,flights.arrivaldate, " +
-                		 "flights.departlocationid,flights.arrivallocationid, " +
-                		 "flights.firstseats-sum(confirmations.firstseats), " +
-                		 "flights.buiseats-sum(confirmations.buiseats)," +
-                		 "flights.econseats-sum(confirmations.econseats) from confirmations, flights "+
-                		 "where flights.idflights = confirmations.flightid group by flightid order by flightid asc");
+                 conn.prepareStatement("SELECT flights.idflights, flights.departtime, flights.departdate,flights.arrivaltime,flights.arrivaldate, \n" + 
+                 		"flights.departlocationid,flights.arrivallocationid, \n" + 
+                 		"ifnull(flights.firstseats-sum(confirmations.firstseats),20),ifnull(flights.buiseats-sum(confirmations.buiseats),20),\n" + 
+                 		"ifnull(flights.econseats-sum(confirmations.econseats),60) from flights left join confirmations \n" + 
+                 		"on flights.idflights = confirmations.flightid group by idflights");
          results = query.executeQuery();
          return toArrayList(results);
      } //end-allFlights
