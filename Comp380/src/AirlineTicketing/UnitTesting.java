@@ -82,5 +82,62 @@ public class UnitTesting {
       System.out.println("  --Passed!");
       
   }
+  
+  //Additional EC testing limits
+  
+  @Test
+  public void SearchByLocationMonthException() throws Exception {
+      
+      exception = assertThrows(Exception.class, () -> Data.convert("13/20/2050"));
+      System.out.println("Date Throws Invalid Month Exception = ...");
+      assertEquals("Date Throws Invalid Month Exception = Fail", "Invalid DATE: month",exception.getMessage());
+      System.out.println("  --Passed!");
+  }
+  
+  @Test
+  public void SearchByLocationDayException1() throws Exception {
+      
+      exception = assertThrows(Exception.class, () -> Data.convert("05/00/2012"));
+      System.out.println("Date Throws Invalid Day Exception = ...");
+      assertEquals("Date Throws Invalid Day Exception = Fail", "Invalid DATE: day",exception.getMessage());
+      System.out.println("  --Passed!");
+  }
+  
+  @Test
+  public void SearchByLocationDayException2() throws Exception {
+      
+      exception = assertThrows(Exception.class, () -> Data.convert("08/35/2019"));
+      System.out.println("Date Throws Invalid Day Exception = ...");
+      assertEquals("Date Throws Invalid Day Exception = Fail", "Invalid DATE: day",exception.getMessage());
+      System.out.println("  --Passed!");
+  }
+  
+  @Test
+  public void SearchByLocationYearException() throws Exception {
+      
+      exception = assertThrows(Exception.class, () -> Data.convert("10/29/1992"));
+      System.out.println("Date Throws Invalid Year Exception = ...");
+      assertEquals("Date Throws Invalid Year Exception = Fail", "Invalid DATE: year",exception.getMessage());
+      System.out.println("  --Passed!");
+  }
+  
+  //Next Test is for rare case -- February and it's leap year (not necessary, just extra)
+  
+  @Test
+  public void SearchByLocationFebruaryDayException() throws Exception {
+      
+      exception = assertThrows(Exception.class, () -> Data.convert("02/31/2011"));
+      System.out.println("Date Throws Invalid Day Exception for February 31st = ...");
+      assertEquals("Date Throws Invalid Day Exception = Fail", "Invalid DATE: day",exception.getMessage());
+      System.out.println("  --Passed!");
+  }
+  
+  @Test
+  public void SearchByLocationLeapYearDay() throws Exception {
+      
+      System.out.println("Date Throws NO Exception for February 29th on leap year = ...");
+      assertArrayEquals("Date Converts With February 29th on Leap Year = Fail", new int[]{02, 29, 2016},Data.convert("02/29/2016"));
+      System.out.println("  --Passed!");
+  }
 
 }
