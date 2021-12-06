@@ -113,7 +113,7 @@ class ConsoleTable {
             fields[8] = "";
         else
             fields[8] = fields[8] + " Economy Class";
-        System.out.format(" #%-5sFlight:%-3s    From%s to%s    Departing%s%s    Seats:%s%s%s%n", fields[0], 
+        System.out.format(" #%-5sFlight:%-3s    From%s to%s    Departing%s%s    Seats:%s %s %s%n", fields[0], 
 			      fields[1], fields[4], fields[5], fields[2], 
 			      fields[3], fields[6], fields[7], 
             		      fields[8]);

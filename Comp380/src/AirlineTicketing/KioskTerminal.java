@@ -44,7 +44,6 @@ public class KioskTerminal {
 	private static final String[] OPTIONS_SM1 = { "View All Flights", "Search Flights by Arrival/Destination" };
 	private static final String OPTION_ZERO_SM1 = "Return to Main Menu";
 
-
 	/***** SUB MENU 2 *****/
 	private static final String TITLE_SM2 = "Choose your section";
 	private static final String[] OPTIONS_SM2 = { "First Class", "Business Class", "Economy Class" };
@@ -59,6 +58,11 @@ public class KioskTerminal {
 	private static final String TITLE_SM4 = "Book a reservation?";
 	private static final String[] OPTIONS_SM4 = { "Yes" };
 	private static final String OPTION_ZERO_SM4 = "No";
+
+	/***** SUB MENU 5  *****/
+	private static final String TITLE_SM5 = "Cancel reservation?";
+	private static final String[] OPTIONS_SM5 = { "Yes" };
+	private static final String OPTION_ZERO_SM5 = "No";
 
 	public static void main(String args[]) throws IOException, InterruptedException {
 		// new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -123,31 +127,24 @@ public class KioskTerminal {
 	} // end-viewRes
 
 	private static void cancelRes() {
+		Menu subMenu5 = new Menu(TITLE_SM5, OPTIONS_SM5, OPTION_ZERO_SM5);
 		Data data;
 		int confirmationId;
 		char answer;
 		Scanner input = new Scanner(System.in);
-		
 		try {
-            		data = Data.getInstance();
-       		} catch (Exception e) {
-            		System.out.println("Unable to get data.");
-            		return;
-        	} // end-try-catch
-		
+			data = Data.getInstance();
+		} catch (Exception e) {
+			System.out.println("Unable to get data.");
+			return;
+		} // end-try-catch
 		confirmationId = viewRes();
-
-		System.out.println("Do you want to cancel this reservation?");
-		answer = input.next().charAt(0);
-		
-		if(answer == 'Y' || answer == 'y'){
-			System.out.println("Processing...");
-			data.cancelreservation(confirmationId);
-			System.out.println("Reservation canceled successfully");
+		if(subMenu5.makeSelection() == 0) {return;}
+		if(data.cancelreservation(confirmationId)) {
+			System.out.println("Reservation canceled successfully.");
 		} else {
-		  	System.out.println("Go back to main menu");
+			System.out.println("Unable to cancel reservation.");
 		}
-		
 	} // end-cancelRes
 
 	private static void viewAllFlights() {
@@ -319,14 +316,6 @@ public class KioskTerminal {
 		} // end-loop
 		return new String[] { first, last, email };
 	} // end-enterInfo
-
-	/*
-	private static int[] chooseSeats(final int FLIGHT_ID) throws Exception {
-		int firstSeats, busSeats, econSeats;
-		System.out.printf("Would you like to reserve seats on Flight #%d (Y/N)?: ", FLIGHT_ID);
-
-	}
-	*/
 
 	private static boolean isOnlyLetters(String s) {
 		return s.matches("[ a-zA-Z]+[a-z-']*$");
