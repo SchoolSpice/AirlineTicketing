@@ -427,7 +427,6 @@ public class KioskTerminal {
 			System.out.println("Unable to initialize database.");
 			return;
 		}
-		//data.runSQL(query);
 		input.close();
 	} // end-enterSQL
 
