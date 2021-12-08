@@ -410,6 +410,7 @@ public class KioskTerminal {
 		} //end-if-else
 	} // end-searchFlightsByLoc
 
+
 	private static void exitKiosk() {
 		System.out.println("\nGoodbye...");
 		System.exit(0);
