@@ -80,6 +80,9 @@ public class KioskTerminal {
 			case 3:
 				cancelRes();
 				break;
+			case 4:
+				enterSQL();
+				break;
 			} // end-switch
 		} // end-loop
 	} // end-main
@@ -410,6 +413,22 @@ public class KioskTerminal {
 		} //end-if-else
 	} // end-searchFlightsByLoc
 
+	private static void enterSQL() {
+		Scanner input = new Scanner(System.in);
+		String query;
+		Data data;
+		System.out.println("WARNING: Not yet working!");
+		System.out.print("\nEnter SQL: ");
+		query = input.nextLine();
+		try {
+			data = Data.getInstance();
+		} catch (Exception e) {
+			//System.out.println(e);
+			System.out.println("Unable to initialize database.");
+			return;
+		}
+		input.close();
+	} // end-enterSQL
 
 	private static void exitKiosk() {
 		System.out.println("\nGoodbye...");
