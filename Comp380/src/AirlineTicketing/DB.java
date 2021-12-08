@@ -67,11 +67,14 @@ import java.math.BigDecimal;
      
      ArrayList<String> searchFlights(final String DEP, String ARR, final int[] MDY) throws Exception {
          PreparedStatement query =
-                 conn.prepareStatement("SELECT * FROM airlinedb.flights " +
+                 conn.prepareStatement("SELECT flights.idflights, flights.departtime, flights.departdate,flights.arrivaltime,flights.arrivaldate," + 
+                 		"flights.departlocationid,flights.arrivallocationid," + 
+                 	"ifnull(flights.firstseats-sum(confirmations.firstseats),20),ifnull(flights.buiseats-sum(confirmations.buiseats),20)," + 
+                 		"ifnull(flights.econseats-sum(confirmations.econseats),60) FROM flights left join confirmations on flights.idflights = confirmations.flightid " +
                  "WHERE flights.departlocationid = '" +
                  DEP + "'AND flights.arrivallocationid = '" +
                  ARR + "'AND flights.departdate = '" + MDY[2] +
-                 "-" + MDY[0] + "-" + MDY[1] + "'");
+                 "-" + MDY[0] + "-" + MDY[1] + "'" + "Group By idflights");
          return toArrayList(query.executeQuery());
      } //end-searchFlights
      
